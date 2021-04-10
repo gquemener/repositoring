@@ -18,6 +18,7 @@
     },
     "require": {
         "symfony/uid": "^5.2",
-        "doctrine/orm": "^2.8"
+        "doctrine/orm": "^2.8",
+        "pomm-project/model-manager": "^2.0"
     }
 }

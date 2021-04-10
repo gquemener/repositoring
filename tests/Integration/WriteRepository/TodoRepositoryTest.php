@@ -18,6 +18,8 @@ use App\Domain\CannotCloseTodo;
 use App\Infrastructure\WriteRepository\DoctrineOrmTodoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use App\Infrastructure\WriteRepository\PommFoundationTodoRepository;
+use PommProject\Foundation\Pomm;
 
 final class TodoRepositoryTest extends TestCase
 {
@@ -57,6 +59,10 @@ final class TodoRepositoryTest extends TestCase
             ['url' => $GLOBALS['DOCTRINE_DBAL_URL']],
             Setup::createXMLMetadataConfiguration([dirname(dirname(dirname(__DIR__))).'/config/doctrine'], true)
         ))];
+
+        yield [new PommFoundationTodoRepository((new Pomm([
+            'default' => ['dsn' => $GLOBALS['DOCTRINE_DBAL_URL']]
+        ]))->getSession('default'))];
 
         yield [new InMemoryEventStoreTodoRepository()];
     }
