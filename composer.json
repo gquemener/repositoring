@@ -18,6 +18,6 @@
     },
     "require": {
         "symfony/uid": "^5.2",
-        "doctrine/dbal": "^3.0"
+        "doctrine/orm": "^2.8"
     }
 }

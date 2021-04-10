@@ -15,6 +15,9 @@ use PDO;
 use PHPUnit\Framework\TestCase;
 use App\Infrastructure\WriteRepository\InMemoryEventStoreTodoRepository;
 use App\Domain\CannotCloseTodo;
+use App\Infrastructure\WriteRepository\DoctrineOrmTodoRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Setup;
 
 final class TodoRepositoryTest extends TestCase
 {
@@ -45,8 +48,15 @@ final class TodoRepositoryTest extends TestCase
     public function provideConcretions(): \Generator
     {
         yield [new InMemoryTodoRepository()];
+
         yield [new PdoTodoRepository(new PDO($GLOBALS['PDO_DSN']))];
+
         yield [new DoctrineDbalTodoRepository(DriverManager::getConnection(['url' => $GLOBALS['DOCTRINE_DBAL_URL']]))];
+
+        yield [new DoctrineOrmTodoRepository(EntityManager::create(
+            ['url' => $GLOBALS['DOCTRINE_DBAL_URL']],
+            Setup::createXMLMetadataConfiguration([dirname(dirname(dirname(__DIR__))).'/config/doctrine'], true)
+        ))];
 
         yield [new InMemoryEventStoreTodoRepository()];
     }

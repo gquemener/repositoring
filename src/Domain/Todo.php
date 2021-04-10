@@ -6,7 +6,7 @@ namespace App\Domain;
 
 final class Todo
 {
-    private TodoId $id;
+    private string $id; // Doctrine ORM prevents using embeddable TodoId as entity identifier
     private TodoDescription $description;
     private TodoStatus $status;
     private array $events = [];
@@ -25,22 +25,22 @@ final class Todo
 
     public function id(): TodoId
     {
-        return $this->id;
+        return TodoId::fromString($this->id);
     }
 
     public function close(): void
     {
         if ($this->status->equals(TodoStatus::closed())) {
-            throw CannotCloseTodo::becauseTodoIsAlreadyClosed($this->id);
+            throw CannotCloseTodo::becauseTodoIsAlreadyClosed($this->id());
         }
 
-        $this->record(new TodoWasClosed($this->id));
+        $this->record(new TodoWasClosed($this->id()));
     }
 
     public static function fromData(array $data): self
     {
         $self = new self();
-        $self->id = TodoId::fromString($data['id']);
+        $self->id = TodoId::fromString($data['id'])->asString();
         $self->description = TodoDescription::fromString($data['description']);
         $self->status = TodoStatus::fromString($data['status']);
 
@@ -50,7 +50,7 @@ final class Todo
     public function toData(): array
     {
         return [
-            'id' => $this->id->asString(),
+            'id' => $this->id()->asString(),
             'description' => $this->description->asString(),
             'status' => $this->status->asString(),
         ];
@@ -76,7 +76,7 @@ final class Todo
 
     private function onTodoWasOpened(TodoWasOpened $event): void
     {
-        $this->id = $event->id;
+        $this->id = $event->id->asString();
         $this->description = $event->description;
         $this->status = TodoStatus::opened();
     }
