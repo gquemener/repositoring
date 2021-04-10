@@ -17,6 +17,7 @@
         "psr-4": { "App\\Tests\\": "tests/" }
     },
     "require": {
-        "symfony/uid": "^5.2"
+        "symfony/uid": "^5.2",
+        "doctrine/dbal": "^3.0"
     }
 }

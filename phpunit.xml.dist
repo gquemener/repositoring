@@ -12,7 +12,8 @@
          failOnWarning="true"
          verbose="true">
     <php>
-        <var name="DB_DSN" value="pgsql:host=postgres;port=5432;dbname=repositoring;user=bruce;password=mypass" />
+        <var name="PDO_DSN" value="pgsql:host=postgres;port=5432;dbname=repositoring;user=bruce;password=mypass" />
+        <var name="DOCTRINE_DBAL_URL" value="pgsql://bruce:mypass@postgres:5432/repositoring" />
     </php>
     <testsuites>
         <testsuite name="default">

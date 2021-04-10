@@ -7,8 +7,10 @@ use App\Domain\Todo;
 use App\Domain\TodoDescription;
 use App\Domain\TodoId;
 use App\Domain\TodoRepository;
+use App\Infrastructure\WriteRepository\DoctrineDbalTodoRepository;
 use App\Infrastructure\WriteRepository\InMemoryTodoRepository;
 use App\Infrastructure\WriteRepository\PdoTodoRepository;
+use Doctrine\DBAL\DriverManager;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +32,7 @@ final class TodoRepositoryTest extends TestCase
     public function provideConcretions(): \Generator
     {
         yield [new InMemoryTodoRepository()];
-
-        yield [new PdoTodoRepository(new PDO($GLOBALS['DB_DSN']))];
+        yield [new PdoTodoRepository(new PDO($GLOBALS['PDO_DSN']))];
+        yield [new DoctrineDbalTodoRepository(DriverManager::getConnection(['url' => $GLOBALS['DOCTRINE_DBAL_URL']]))];
     }
 }
