@@ -3,10 +3,21 @@ version: '3.9'
 services:
     php:
         build:
-            context: ./docker
+            context: ./docker/php
             args:
                 phpunit_version: 9.5.4
         working_dir: /app
         volumes:
             - '.:/app'
         user: '${UID:-1000}:${GID:-1000}'
+        depends_on:
+            - postgres
+
+    postgres:
+        image: postgres:13
+        volumes:
+            - './docker/pgsql:/docker-entrypoint-initdb.d'
+        environment:
+            POSTGRES_DB: repositoring
+            POSTGRES_USER: bruce
+            POSTGRES_PASSWORD: mypass

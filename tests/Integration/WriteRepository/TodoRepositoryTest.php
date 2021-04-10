@@ -3,12 +3,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\WriteRepository;
 
-use PHPUnit\Framework\TestCase;
-use App\Domain\TodoRepository;
-use App\Infrastructure\WriteRepository\InMemoryTodoRepository;
-use App\Domain\TodoId;
 use App\Domain\Todo;
 use App\Domain\TodoDescription;
+use App\Domain\TodoId;
+use App\Domain\TodoRepository;
+use App\Infrastructure\WriteRepository\InMemoryTodoRepository;
+use App\Infrastructure\WriteRepository\PdoTodoRepository;
+use PDO;
+use PHPUnit\Framework\TestCase;
 
 final class TodoRepositoryTest extends TestCase
 {
@@ -28,5 +30,7 @@ final class TodoRepositoryTest extends TestCase
     public function provideConcretions(): \Generator
     {
         yield [new InMemoryTodoRepository()];
+
+        yield [new PdoTodoRepository(new PDO($GLOBALS['DB_DSN']))];
     }
 }
