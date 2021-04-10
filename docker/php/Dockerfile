@@ -10,4 +10,8 @@ RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar
 RUN chmod +x phpunit-$phpunit_version.phar
 RUN mv phpunit-$phpunit_version.phar /usr/bin/phpunit
 
+ARG wait_version
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$wait_version/wait /usr/bin/wait
+RUN chmod +x /usr/bin/wait
+
 CMD ["php", "-v"]
