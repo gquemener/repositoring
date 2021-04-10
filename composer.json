@@ -1,0 +1,22 @@
+{
+    "name": "gquemener/repositoring",
+    "description": "A set of read/write repository implementations, because why not!",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gildas Quéméner",
+            "email": "gildas.quemener@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": { "App\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "App\\Tests\\": "tests/" }
+    },
+    "require": {
+        "symfony/uid": "^5.2"
+    }
+}
