@@ -31,8 +31,12 @@ final class DoctrineDbalTodoRepository implements TodoRepository
     public function save(Todo $todo): void
     {
         $this->dbal->beginTransaction();
+        $sql = <<<SQL
+        INSERT INTO "doctrine_dbal_todo" ("id", "description", "status") VALUES (:id, :description, :status)
+        ON CONFLICT ON CONSTRAINT "doctrine_dbal_todo_id" DO UPDATE SET status = :status
+        SQL;
         try{
-            $this->dbal->insert('doctrine_dbal_todo', $todo->toData());
+            $this->dbal->executeStatement($sql, $todo->toData());
             $this->dbal->commit();
         } catch (\Exception $e) {
             $this->dbal->rollBack();

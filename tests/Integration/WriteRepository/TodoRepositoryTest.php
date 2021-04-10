@@ -13,6 +13,8 @@ use App\Infrastructure\WriteRepository\PdoTodoRepository;
 use Doctrine\DBAL\DriverManager;
 use PDO;
 use PHPUnit\Framework\TestCase;
+use App\Infrastructure\WriteRepository\InMemoryEventStoreTodoRepository;
+use App\Domain\CannotCloseTodo;
 
 final class TodoRepositoryTest extends TestCase
 {
@@ -23,10 +25,21 @@ final class TodoRepositoryTest extends TestCase
     {
         $id = TodoId::generate();
         $todo = Todo::open($id, TodoDescription::fromString('Buy milk'));
-
         $repository->save($todo);
 
-        $this->assertInstanceOf(Todo::class, $repository->get($id));
+        $todo = $repository->get($id);
+        $this->assertInstanceOf(Todo::class, $todo);
+        $todo->close();
+        $repository->save($todo);
+
+        try {
+            $todo = $repository->get($id);
+            $todo->close();
+        } catch (CannotCloseTodo) {
+            return;
+        }
+
+        throw new \RuntimeException('Expecting to not be able to close already closed todo.');
     }
 
     public function provideConcretions(): \Generator
@@ -34,5 +47,7 @@ final class TodoRepositoryTest extends TestCase
         yield [new InMemoryTodoRepository()];
         yield [new PdoTodoRepository(new PDO($GLOBALS['PDO_DSN']))];
         yield [new DoctrineDbalTodoRepository(DriverManager::getConnection(['url' => $GLOBALS['DOCTRINE_DBAL_URL']]))];
+
+        yield [new InMemoryEventStoreTodoRepository()];
     }
 }

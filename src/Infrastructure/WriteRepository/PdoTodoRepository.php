@@ -29,7 +29,11 @@ final class PdoTodoRepository implements TodoRepository
     public function save(Todo $todo): void
     {
         $this->pdo->beginTransaction();
-        $stmt = $this->pdo->prepare('INSERT INTO "pdo_todo" ("id", "description", "status") VALUES (:id, :description, :status)');
+        $sql = <<<SQL
+        INSERT INTO "pdo_todo" ("id", "description", "status") VALUES (:id, :description, :status)
+        ON CONFLICT ON CONSTRAINT "pdo_todo_id" DO UPDATE SET status = :status
+        SQL;
+        $stmt = $this->pdo->prepare($sql);
         try {
             $stmt->execute($todo->toData());
             $this->pdo->commit();

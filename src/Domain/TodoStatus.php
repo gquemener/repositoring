@@ -6,7 +6,8 @@ namespace App\Domain;
 final class TodoStatus
 {
     private const VALUES = [
-        'open'
+        'opened',
+        'closed'
     ];
 
     private function __construct(
@@ -14,9 +15,9 @@ final class TodoStatus
     ) {
     }
 
-    public static function open(): self
+    public static function __callStatic(string $name, array $arguments): self
     {
-        return self::fromString('open');
+        return self::fromString($name);
     }
 
     public static function fromString(string $value): self
@@ -31,9 +32,17 @@ final class TodoStatus
         return new self($value);
     }
 
-
     public function asString(): string
     {
         return $this->value;
+    }
+
+    public function equals(object $other): bool
+    {
+        if (!$other instanceof self) {
+            return false;
+        }
+
+        return $other->value === $this->value;
     }
 }
