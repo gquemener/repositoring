@@ -4,3 +4,7 @@ test: phpunit.xml
 
 phpunit.xml:
 	cp phpunit.xml.dist phpunit.xml
+
+.PHONY: clean
+clean:
+	rm phpunit.xml
