@@ -4,6 +4,11 @@ RUN apk add postgresql-dev
 RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-install pgsql
 
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
+RUN pecl install xdebug
+COPY xdebug.ini /usr/local/etc/php/conf.d/
+RUN apk del .build-deps
+
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 ARG phpunit_version
