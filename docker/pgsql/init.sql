@@ -12,11 +12,12 @@ CREATE TABLE "public"."doctrine_dbal_todo" (
     CONSTRAINT "doctrine_dbal_todo_id" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."doctrine_orm_todo" (
-    "id" uuid NOT NULL,
-    "description_value" text NOT NULL,
-    "status_value" text NOT NULL,
-    PRIMARY KEY ("id")
+CREATE TABLE doctrine_orm_todo (
+    id UUID NOT NULL,
+    version INT DEFAULT 1 NOT NULL,
+    description_value TEXT NOT NULL,
+    status_value TEXT NOT NULL,
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE "public"."pomm_foundation_todo" (

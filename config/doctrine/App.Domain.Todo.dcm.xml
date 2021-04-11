@@ -9,6 +9,8 @@
             <generator strategy="NONE" />
         </id>
 
+        <field name="version" type="integer" version="true" />
+
         <embedded name="description" class="App\Domain\TodoDescription" />
         <embedded name="status" class="App\Domain\TodoStatus" />
     </entity>

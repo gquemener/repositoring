@@ -7,8 +7,13 @@ namespace App\Domain;
 final class Todo
 {
     private string $id; // Doctrine ORM prevents using embeddable TodoId as entity identifier
+
+    private int $version;
+
     private TodoDescription $description;
+
     private TodoStatus $status;
+
     private array $events = [];
 
     private function __construct()
