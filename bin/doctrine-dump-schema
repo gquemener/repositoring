@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+
+<?php
+
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Setup;
+use App\Domain\Todo;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+
+$em = EntityManager::create(
+    ['url' => 'pgsql://bruce:mypass@postgres:5432/repositoring'],
+    Setup::createXMLMetadataConfiguration([dirname(__DIR__).'/config/doctrine'], true)
+);
+$schemaTool = new SchemaTool($em);
+
+foreach ($schemaTool->getCreateSchemaSql([$em->getClassMetadata(Todo::class)]) as $sql) {
+    echo $sql;
+}
