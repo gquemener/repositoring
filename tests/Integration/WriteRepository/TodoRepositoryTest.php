@@ -20,6 +20,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use App\Infrastructure\WriteRepository\PommFoundationTodoRepository;
 use PommProject\Foundation\Pomm;
+use App\Infrastructure\WriteRepository\ProophEventStoreTodoRepository;
+use Prooph\EventStore\Pdo\Container\PostgresEventStoreFactory;
+use Psr\Container\ContainerInterface;
+use Prooph\EventStore\Pdo\PostgresEventStore;
+use Prooph\Common\Messaging\FQCNMessageFactory;
+use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresAggregateStreamStrategy;
 
 final class TodoRepositoryTest extends TestCase
 {
@@ -65,5 +71,11 @@ final class TodoRepositoryTest extends TestCase
         ]))->getSession('default'))];
 
         yield [new InMemoryEventStoreTodoRepository()];
+
+        yield [new ProophEventStoreTodoRepository(new PostgresEventStore(
+            new FQCNMessageFactory(),
+            new PDO($GLOBALS['PDO_DSN']),
+            new PostgresAggregateStreamStrategy()
+        ))];
     }
 }

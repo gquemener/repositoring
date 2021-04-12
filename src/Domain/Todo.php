@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+use Prooph\Common\Messaging\DomainEvent;
+
 final class Todo
 {
     private string $id; // Doctrine ORM prevents using embeddable TodoId as entity identifier
 
-    private int $version;
+    private int $no; // Doctrine ORM version
+
+    private int $version = 1; // Prooph ES version
 
     private TodoDescription $description;
 
@@ -39,7 +43,7 @@ final class Todo
             throw CannotCloseTodo::becauseTodoIsAlreadyClosed($this->id());
         }
 
-        $this->record(new TodoWasClosed($this->id()));
+        $this->record(new TodoWasClosed());
     }
 
     public static function fromData(array $data): self
@@ -95,11 +99,17 @@ final class Todo
     {
         $name = substr(get_class($event), strrpos(get_class($event), '\\') + 1);
         $this->{'on'.$name}($event);
+        $this->version++;
     }
 
-    private function record(object $event): void
+    private function record(DomainEvent $event): void
     {
-        $this->events[] = $event;
         $this->apply($event);
+
+        $event = $event->withAddedMetadata('_aggregate_version', $this->version - 1);
+        $event = $event->withAddedMetadata('_aggregate_type', Todo::class);
+        $event = $event->withAddedMetadata('_aggregate_id', $this->id);
+
+        $this->events[] = $event;
     }
 }

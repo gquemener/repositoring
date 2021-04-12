@@ -3,10 +3,21 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
-final class TodoWasClosed
+use Prooph\Common\Messaging\DomainEvent;
+
+final class TodoWasClosed extends DomainEvent
 {
-    public function __construct(
-        public TodoId $id
-    ) {
+    public function __construct()
+    {
+        $this->init();
+    }
+
+    protected function setPayload(array $payload): void
+    {
+    }
+
+    public function payload(): array
+    {
+        return [];
     }
 }
