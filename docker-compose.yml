@@ -10,7 +10,6 @@ services:
         working_dir: /app
         volumes:
             - '.:/app'
-            - '$HOME/.cache/composer:/.composer'
         user: '${UID:-1000}:${GID:-1000}'
         depends_on:
             - postgres

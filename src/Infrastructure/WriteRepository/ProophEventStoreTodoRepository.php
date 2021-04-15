@@ -29,8 +29,7 @@ final class ProophEventStoreTodoRepository implements TodoRepository
             return null;
         }
 
-        $matcher = new MetadataMatcher();
-        $matcher = $matcher
+        $matcher = (new MetadataMatcher())
             ->withMetadataMatch('_aggregate_id', Operator::EQUALS(), $id->asString())
             ->withMetadataMatch('_aggregate_type', Operator::EQUALS(), Todo::class)
         ;
