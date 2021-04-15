@@ -67,6 +67,14 @@ final class Todo
 
     public static function replayHistory(iterable $events): self
     {
+        if (!is_array($events) && !$events instanceof \Countable) {
+            throw new \InvalidArgumentException('Could not count events');
+        }
+
+        if (0 === count($events)) {
+            throw new \InvalidArgumentException('Cannot replay an empty history');
+        }
+
         $self = new self();
         foreach ($events as $event) {
             $self->apply($event);

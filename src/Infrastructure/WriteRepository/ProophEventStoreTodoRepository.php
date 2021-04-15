@@ -34,7 +34,11 @@ final class ProophEventStoreTodoRepository implements TodoRepository
             ->withMetadataMatch('_aggregate_type', Operator::EQUALS(), Todo::class)
         ;
 
-        return Todo::replayHistory($this->store->load($name, 1, null, $matcher));
+        try {
+            return Todo::replayHistory($this->store->load($name, 1, null, $matcher));
+        } catch (\InvalidArgumentException) {
+            return null;
+        }
     }
 
     public function save(Todo $todo): void

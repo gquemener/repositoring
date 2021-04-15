@@ -36,8 +36,11 @@ final class TodoRepositoryTest extends TestCase
     public function testTodoPersistence(TodoRepository $repository): void
     {
         $id = TodoId::generate();
+
         $todo = Todo::open($id, TodoDescription::fromString('Buy milk'));
         $repository->save($todo);
+
+        $this->assertNull($repository->get(TodoId::generate()));
 
         $todo = $repository->get($id);
         $this->assertInstanceOf(Todo::class, $todo);
