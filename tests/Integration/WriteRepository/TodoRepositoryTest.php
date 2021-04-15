@@ -26,6 +26,7 @@ use Psr\Container\ContainerInterface;
 use Prooph\EventStore\Pdo\PostgresEventStore;
 use Prooph\Common\Messaging\FQCNMessageFactory;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresAggregateStreamStrategy;
+use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
 
 final class TodoRepositoryTest extends TestCase
 {
@@ -75,7 +76,7 @@ final class TodoRepositoryTest extends TestCase
         yield ProophEventStoreTodoRepository::class => [new ProophEventStoreTodoRepository(new PostgresEventStore(
             new FQCNMessageFactory(),
             new PDO($GLOBALS['PDO_DSN']),
-            new PostgresAggregateStreamStrategy()
+            new PostgresSingleStreamStrategy()
         ))];
     }
 }

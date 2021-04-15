@@ -65,7 +65,7 @@ final class Todo
         ];
     }
 
-    public static function replayHistory(array $events): self
+    public static function replayHistory(iterable $events): self
     {
         $self = new self();
         foreach ($events as $event) {
@@ -107,8 +107,6 @@ final class Todo
         $this->apply($event);
 
         $event = $event->withAddedMetadata('_aggregate_version', $this->version - 1);
-        $event = $event->withAddedMetadata('_aggregate_type', Todo::class);
-        $event = $event->withAddedMetadata('_aggregate_id', $this->id);
 
         $this->events[] = $event;
     }
