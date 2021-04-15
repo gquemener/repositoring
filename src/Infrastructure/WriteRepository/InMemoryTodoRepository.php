@@ -6,8 +6,10 @@ namespace App\Infrastructure\WriteRepository;
 use App\Domain\TodoRepository;
 use App\Domain\TodoId;
 use App\Domain\Todo;
+use App\Application\ReadModel\TodosRepository;
+use App\Application\ReadModel\OpenedTodo;
 
-final class InMemoryTodoRepository implements TodoRepository
+final class InMemoryTodoRepository implements TodoRepository, TodosRepository
 {
     private array $storage = [];
 
@@ -25,5 +27,20 @@ final class InMemoryTodoRepository implements TodoRepository
     public function save(Todo $todo): void
     {
         $this->storage[$todo->id()->asString()] = $todo->toData();
+    }
+
+    public function opened(): array
+    {
+        $todos = [];
+        foreach ($this->storage as $data) {
+            if ('opened' === $data['status']) {
+                $todo = new OpenedTodo();
+                $todo->id = $data['id'];
+                $todo->description = $data['description'];
+                $todos[] = $todo;
+            }
+        }
+
+        return $todos;
     }
 }

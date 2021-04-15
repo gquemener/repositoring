@@ -32,7 +32,7 @@ final class TodoRepositoryTest extends TestCase
     /**
      * @dataProvider provideConcretions
      */
-    public function testSaveGet(TodoRepository $repository): void
+    public function testTodoPersistence(TodoRepository $repository): void
     {
         $id = TodoId::generate();
         $todo = Todo::open($id, TodoDescription::fromString('Buy milk'));
@@ -55,24 +55,24 @@ final class TodoRepositoryTest extends TestCase
 
     public function provideConcretions(): \Generator
     {
-        yield [new InMemoryTodoRepository()];
+        yield InMemoryTodoRepository::class => [new InMemoryTodoRepository()];
 
-        yield [new PdoTodoRepository(new PDO($GLOBALS['PDO_DSN']))];
+        yield PdoTodoRepository::class => [new PdoTodoRepository(new PDO($GLOBALS['PDO_DSN']))];
 
-        yield [new DoctrineDbalTodoRepository(DriverManager::getConnection(['url' => $GLOBALS['DOCTRINE_DBAL_URL']]))];
+        yield DoctrineDbalTodoRepository::class => [new DoctrineDbalTodoRepository(DriverManager::getConnection(['url' => $GLOBALS['DOCTRINE_DBAL_URL']]))];
 
-        yield [new DoctrineOrmTodoRepository(EntityManager::create(
+        yield DoctrineOrmTodoRepository::class => [new DoctrineOrmTodoRepository(EntityManager::create(
             ['url' => $GLOBALS['DOCTRINE_DBAL_URL']],
             Setup::createXMLMetadataConfiguration([dirname(dirname(dirname(__DIR__))).'/config/doctrine'], true)
         ))];
 
-        yield [new PommFoundationTodoRepository((new Pomm([
+        yield PommFoundationTodoRepository::class => [new PommFoundationTodoRepository((new Pomm([
             'default' => ['dsn' => $GLOBALS['DOCTRINE_DBAL_URL']]
         ]))->getSession('default'))];
 
-        yield [new InMemoryEventStoreTodoRepository()];
+        yield InMemoryEventStoreTodoRepository::class => [new InMemoryEventStoreTodoRepository()];
 
-        yield [new ProophEventStoreTodoRepository(new PostgresEventStore(
+        yield ProophEventStoreTodoRepository::class => [new ProophEventStoreTodoRepository(new PostgresEventStore(
             new FQCNMessageFactory(),
             new PDO($GLOBALS['PDO_DSN']),
             new PostgresAggregateStreamStrategy()
