@@ -7,17 +7,21 @@ use Prooph\Common\Messaging\DomainEvent;
 
 final class TodoWasClosed extends DomainEvent
 {
-    public function __construct()
-    {
+    public function __construct(
+        public TodoId $id
+    ) {
         $this->init();
     }
 
     protected function setPayload(array $payload): void
     {
+        $this->id = TodoId::fromString($payload['id']);
     }
 
     public function payload(): array
     {
-        return [];
+        return [
+            'id' => $this->id->asString(),
+        ];
     }
 }

@@ -10,6 +10,7 @@ use App\Domain\TodoId;
 use App\Domain\TodoRepository;
 use App\Infrastructure\WriteRepository\InMemoryTodoRepository;
 use PHPUnit\Framework\TestCase;
+use App\Infrastructure\WriteRepository\InMemoryEventStoreTodoRepository;
 
 final class TodosRepositoryTest extends TestCase
 {
@@ -34,6 +35,9 @@ final class TodosRepositoryTest extends TestCase
     {
         $inMemoryRepository = new InMemoryTodoRepository();
         yield InMemoryTodoRepository::class => [$inMemoryRepository, $inMemoryRepository];
+
+        $inMemoryEventStoreTodoRepository = new InMemoryEventStoreTodoRepository();
+        yield InMemoryEventStoreTodoRepository::class => [$inMemoryEventStoreTodoRepository, $inMemoryEventStoreTodoRepository];
     }
 
     private function openedTodo(): Todo

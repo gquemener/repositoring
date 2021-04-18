@@ -43,7 +43,7 @@ final class Todo
             throw CannotCloseTodo::becauseTodoIsAlreadyClosed($this->id());
         }
 
-        $this->record(new TodoWasClosed());
+        $this->record(new TodoWasClosed($this->id()));
     }
 
     public static function fromData(array $data): self
