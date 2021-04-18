@@ -8,9 +8,12 @@ use App\Domain\Todo;
 use App\Domain\TodoDescription;
 use App\Domain\TodoId;
 use App\Domain\TodoRepository;
-use App\Infrastructure\WriteRepository\InMemoryTodoRepository;
 use PHPUnit\Framework\TestCase;
-use App\Infrastructure\WriteRepository\InMemoryEventStoreTodoRepository;
+use PDO;
+use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
+use App\Infrastructure\Repository\Pdo\PdoTodosRepository;
+use App\Infrastructure\Repository\InMemoryTodoRepository;
+use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
 
 final class TodosRepositoryTest extends TestCase
 {
@@ -19,8 +22,13 @@ final class TodosRepositoryTest extends TestCase
      */
     public function testListOpenedTodos(
         TodoRepository $writeModelRepository,
-        TodosRepository $readModelRepository
+        TodosRepository $readModelRepository,
+        ?callable $setuper = null
     ): void {
+        if ($setuper) {
+            $setuper();
+        }
+
         $writeModelRepository->save($this->openedTodo());
         $writeModelRepository->save($this->openedTodo());
         $writeModelRepository->save($this->closedTodo());
@@ -38,6 +46,13 @@ final class TodosRepositoryTest extends TestCase
 
         $inMemoryEventStoreTodoRepository = new InMemoryEventStoreTodoRepository();
         yield InMemoryEventStoreTodoRepository::class => [$inMemoryEventStoreTodoRepository, $inMemoryEventStoreTodoRepository];
+
+        $pdo = new PDO($GLOBALS['PDO_DSN']);
+        yield PdoTodosRepository::class => [
+            new PdoTodoRepository($pdo),
+            new PdoTodosRepository($pdo),
+            (fn (PDO $conn): callable => fn (): int => $conn->exec('TRUNCATE TABLE "pdo_todo"'))($pdo),
+        ];
     }
 
     private function openedTodo(): Todo

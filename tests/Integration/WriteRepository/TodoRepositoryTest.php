@@ -3,30 +3,30 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\WriteRepository;
 
+use App\Domain\CannotCloseTodo;
 use App\Domain\Todo;
 use App\Domain\TodoDescription;
 use App\Domain\TodoId;
 use App\Domain\TodoRepository;
-use App\Infrastructure\WriteRepository\DoctrineDbalTodoRepository;
-use App\Infrastructure\WriteRepository\InMemoryTodoRepository;
-use App\Infrastructure\WriteRepository\PdoTodoRepository;
+use App\Infrastructure\Repository\DoctrineDbalTodoRepository;
+use App\Infrastructure\Repository\DoctrineOrmTodoRepository;
+use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
+use App\Infrastructure\Repository\InMemoryTodoRepository;
+use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
+use App\Infrastructure\Repository\PommFoundationTodoRepository;
+use App\Infrastructure\Repository\ProophEventStoreTodoRepository;
 use Doctrine\DBAL\DriverManager;
-use PDO;
-use PHPUnit\Framework\TestCase;
-use App\Infrastructure\WriteRepository\InMemoryEventStoreTodoRepository;
-use App\Domain\CannotCloseTodo;
-use App\Infrastructure\WriteRepository\DoctrineOrmTodoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
-use App\Infrastructure\WriteRepository\PommFoundationTodoRepository;
+use PDO;
+use PHPUnit\Framework\TestCase;
 use PommProject\Foundation\Pomm;
-use App\Infrastructure\WriteRepository\ProophEventStoreTodoRepository;
-use Prooph\EventStore\Pdo\Container\PostgresEventStoreFactory;
-use Psr\Container\ContainerInterface;
-use Prooph\EventStore\Pdo\PostgresEventStore;
 use Prooph\Common\Messaging\FQCNMessageFactory;
+use Prooph\EventStore\Pdo\Container\PostgresEventStoreFactory;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresAggregateStreamStrategy;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
+use Prooph\EventStore\Pdo\PostgresEventStore;
+use Psr\Container\ContainerInterface;
 
 final class TodoRepositoryTest extends TestCase
 {

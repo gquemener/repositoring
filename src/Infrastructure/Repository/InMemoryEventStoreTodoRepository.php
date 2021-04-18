@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\WriteRepository;
+namespace App\Infrastructure\Repository;
 
 use App\Domain\TodoRepository;
 use App\Domain\TodoId;
