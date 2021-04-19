@@ -25,6 +25,7 @@ final class DoctrineDbalTodoRepository implements TodoRepository
             return null;
         }
 
+        /** @var array{'id': string, 'description': string, 'status': string} $data */
         return Todo::fromData($data);
     }
 

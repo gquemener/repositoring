@@ -18,6 +18,7 @@ final class Todo
 
     private TodoStatus $status;
 
+    /** @var DomainEvent[] */
     private array $events = [];
 
     private function __construct()
@@ -26,7 +27,7 @@ final class Todo
 
     public static function open(TodoId $id, TodoDescription $description): self
     {
-        $self = new self($id, $description, TodoStatus::opened());
+        $self = new self();
         $self->record(new TodoWasOpened($id, $description));
 
         return $self;
@@ -46,6 +47,9 @@ final class Todo
         $this->record(new TodoWasClosed($this->id()));
     }
 
+    /**
+     * @param array{'id': string, 'description': string, 'status': string} $data
+     */
     public static function fromData(array $data): self
     {
         $self = new self();
@@ -56,15 +60,21 @@ final class Todo
         return $self;
     }
 
+    /**
+     * @return array{'id': string, 'description': string, 'status': string}
+     */
     public function toData(): array
     {
         return [
-            'id' => $this->id()->asString(),
+            'id' => $this->id,
             'description' => $this->description->asString(),
             'status' => $this->status->asString(),
         ];
     }
 
+    /**
+     * @param iterable<DomainEvent> $events
+     */
     public static function replayHistory(iterable $events): self
     {
         if (!is_array($events) && !$events instanceof \Countable) {
@@ -83,6 +93,9 @@ final class Todo
         return $self;
     }
 
+    /**
+     * @return DomainEvent[]
+     */
     public function releaseEvents(): array
     {
         $events = $this->events;

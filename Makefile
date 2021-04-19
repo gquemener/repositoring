@@ -8,11 +8,12 @@ export UID
 export GID
 
 .PHONY: test
-test: phpunit.xml
+test: phpunit.xml composer.lock
 	docker-compose run --rm php sh -c "/usr/bin/wait && phpunit --colors --testdox"
 
-.PHONY: install
-install: composer.lock
+.PHONY: check
+check: composer.lock
+	docker-compose run --rm php phpstan --no-progress --ansi
 
 composer.lock:
 	docker-compose run --rm php composer install
@@ -27,4 +28,4 @@ clean:
 	docker-compose down
 
 .PHONY: all
-all: install test clean
+all: check test clean

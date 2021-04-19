@@ -6,6 +6,7 @@ services:
             context: ./docker/php
             args:
                 phpunit_version: 9.5.4
+                phpstan_version: 0.12.83
                 wait_version: 2.8.0
         working_dir: /app
         volumes:

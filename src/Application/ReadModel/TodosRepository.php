@@ -5,5 +5,8 @@ namespace App\Application\ReadModel;
 
 interface TodosRepository
 {
+    /**
+     * @return OpenedTodo[]
+     */
     public function opened(): array;
 }

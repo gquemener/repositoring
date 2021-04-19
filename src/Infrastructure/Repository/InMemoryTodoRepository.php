@@ -11,6 +11,7 @@ use App\Application\ReadModel\OpenedTodo;
 
 final class InMemoryTodoRepository implements TodoRepository, TodosRepository
 {
+    /** @var array<string, array{'id': string, 'description': string, 'status': string}> */
     private array $storage = [];
 
     public function get(TodoId $id): ?Todo
