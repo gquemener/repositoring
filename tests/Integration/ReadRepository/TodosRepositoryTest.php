@@ -14,6 +14,14 @@ use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodosRepository;
 use App\Infrastructure\Repository\InMemoryTodoRepository;
 use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
+use App\Infrastructure\Repository\ProophEventStoreTodoRepository;
+use Prooph\EventStore\Pdo\PostgresEventStore;
+use Prooph\Common\Messaging\FQCNMessageFactory;
+use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
+use App\Infrastructure\Repository\Prooph\OpenedTodoReadModel;
+use Prooph\EventStore\Pdo\Projection\PostgresProjectionManager;
+use App\Domain\TodoWasOpened;
+use App\Domain\TodoWasClosed;
 
 final class TodosRepositoryTest extends TestCase
 {
@@ -23,10 +31,11 @@ final class TodosRepositoryTest extends TestCase
     public function testListOpenedTodos(
         TodoRepository $writeModelRepository,
         TodosRepository $readModelRepository,
-        ?callable $setuper = null
+        ?callable $setupWriteModel = null,
+        ?callable $setupReadModel = null
     ): void {
-        if ($setuper) {
-            $setuper();
+        if ($setupWriteModel) {
+            $setupWriteModel();
         }
 
         $writeModelRepository->save($this->openedTodo());
@@ -36,6 +45,9 @@ final class TodosRepositoryTest extends TestCase
         $writeModelRepository->save($this->closedTodo());
         $writeModelRepository->save($this->closedTodo());
 
+        if ($setupReadModel) {
+            $setupReadModel();
+        }
         $this->assertCount(3, $readModelRepository->opened());
     }
 
@@ -47,11 +59,57 @@ final class TodosRepositoryTest extends TestCase
         $inMemoryEventStoreTodoRepository = new InMemoryEventStoreTodoRepository();
         yield InMemoryEventStoreTodoRepository::class => [$inMemoryEventStoreTodoRepository, $inMemoryEventStoreTodoRepository];
 
+        $executeSql = fn(PDO $conn): callable => fn($sql): callable => fn (): int => $conn->exec($sql);
+
         $pdo = new PDO($GLOBALS['PDO_DSN']);
         yield PdoTodosRepository::class => [
             new PdoTodoRepository($pdo),
             new PdoTodosRepository($pdo),
-            (fn (PDO $conn): callable => fn (): int => $conn->exec('TRUNCATE TABLE "pdo_todo"'))($pdo),
+            $executeSql($pdo)('TRUNCATE TABLE "pdo_todo"')
+        ];
+
+        $pdo = new PDO($GLOBALS['PDO_DSN']);
+        $openedTodoReadModel = new OpenedTodoReadModel($pdo);
+        $eventStore = new PostgresEventStore(new FQCNMessageFactory(), $pdo, new PostgresSingleStreamStrategy());
+        yield OpenedTodoReadModel::class => [
+            new ProophEventStoreTodoRepository($eventStore),
+            $openedTodoReadModel,
+            $executeSql($pdo)(<<<SQL
+                DO $$
+                    DECLARE
+                        name text;
+                    BEGIN
+                        FOR name IN SELECT stream_name FROM event_streams
+                        LOOP
+                            EXECUTE 'DROP TABLE ' || quote_ident(name);
+                        END LOOP;
+                        TRUNCATE TABLE "event_streams";
+                    END;
+                $$;
+            SQL),
+            function() use ($executeSql, $pdo, $eventStore, $openedTodoReadModel) {
+                $executeSql($pdo)('TRUNCATE TABLE "prooph_read_opened_todo"');
+
+                $projectionManager = new PostgresProjectionManager($eventStore, $pdo);
+                $projectionManager
+                    ->createReadModelProjection('opened_todo', $openedTodoReadModel)
+                    ->fromStream('todo')
+                    ->when([
+                        TodoWasOpened::class => function ($state, TodoWasOpened $event) {
+                            $this->readModel()->stack('insert', [
+                                'id' => $event->id->asString(),
+                                'description' => $event->description->asString(),
+                            ]);
+                        },
+                        TodoWasClosed::class => function ($state, TodoWasClosed $event) {
+                            $this->readModel()->stack('remove', [
+                                'id' => $event->id->asString(),
+                            ]);
+                        },
+                    ])
+                    ->run(false)
+                ;
+            }
         ];
     }
 
