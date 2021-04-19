@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Repository;
+namespace App\Infrastructure\Repository\Prooph;
 
 use App\Domain\TodoRepository;
 use App\Domain\Todo;

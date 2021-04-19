@@ -14,7 +14,6 @@ use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
 use App\Infrastructure\Repository\InMemoryTodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
 use App\Infrastructure\Repository\PommFoundationTodoRepository;
-use App\Infrastructure\Repository\ProophEventStoreTodoRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
@@ -27,6 +26,7 @@ use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresAggregateStreamStrategy;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
 use Prooph\EventStore\Pdo\PostgresEventStore;
 use Psr\Container\ContainerInterface;
+use App\Infrastructure\Repository\Prooph\ProophEventStoreTodoRepository;
 
 final class TodoRepositoryTest extends TestCase
 {

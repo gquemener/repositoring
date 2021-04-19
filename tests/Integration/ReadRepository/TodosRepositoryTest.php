@@ -14,7 +14,7 @@ use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodosRepository;
 use App\Infrastructure\Repository\InMemoryTodoRepository;
 use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
-use App\Infrastructure\Repository\ProophEventStoreTodoRepository;
+use App\Infrastructure\Repository\Prooph\ProophEventStoreTodoRepository;
 use Prooph\EventStore\Pdo\PostgresEventStore;
 use Prooph\Common\Messaging\FQCNMessageFactory;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
