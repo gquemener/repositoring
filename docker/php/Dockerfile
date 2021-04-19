@@ -20,4 +20,9 @@ ARG wait_version
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$wait_version/wait /usr/bin/wait
 RUN chmod +x /usr/bin/wait
 
+ARG phpstan_version
+RUN wget https://github.com/phpstan/phpstan/releases/download/$phpstan_version/phpstan.phar
+RUN chmod +x phpstan.phar
+RUN mv phpstan.phar /usr/bin/phpstan
+
 CMD ["php", "-v"]

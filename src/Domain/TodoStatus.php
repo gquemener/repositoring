@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+/**
+ * @method static TodoStatus opened()
+ * @method static TodoStatus closed()
+ */
 final class TodoStatus
 {
     private const VALUES = [
@@ -15,6 +19,9 @@ final class TodoStatus
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $arguments
+     */
     public static function __callStatic(string $name, array $arguments): self
     {
         return self::fromString($name);

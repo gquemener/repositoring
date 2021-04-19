@@ -10,9 +10,11 @@ use App\Application\ReadModel\TodosRepository;
 use App\Application\ReadModel\OpenedTodo;
 use App\Domain\TodoWasOpened;
 use App\Domain\TodoWasClosed;
+use Prooph\Common\Messaging\DomainEvent;
 
 final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRepository
 {
+    /** @var array<string, DomainEvent[]> */
     private $streams = [];
 
     public function get(TodoId $id): ?Todo

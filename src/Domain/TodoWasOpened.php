@@ -14,12 +14,18 @@ final class TodoWasOpened extends DomainEvent
         $this->init();
     }
 
+    /**
+     * @param array{'id': string, 'description': string} $payload
+     */
     protected function setPayload(array $payload): void
     {
         $this->id = TodoId::fromString($payload['id']);
         $this->description = TodoDescription::fromString($payload['description']);
     }
 
+    /**
+     * @return array{'id': string, 'description': string}
+     */
     public function payload(): array
     {
         return [

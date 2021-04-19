@@ -6,7 +6,8 @@ namespace App\Infrastructure\Repository;
 use App\Domain\TodoRepository;
 use App\Domain\TodoId;
 use App\Domain\Todo;
-use PommProject\Foundation\Session\Session;
+use PommProject\Foundation\Session;
+use Countable;
 
 final class PommFoundationTodoRepository implements TodoRepository
 {
@@ -19,12 +20,16 @@ final class PommFoundationTodoRepository implements TodoRepository
     {
         $qm = $this->session->getQueryManager();
 
-        $query = $qm->query('SELECT * FROM "pomm_foundation_todo" WHERE id = $*', [$id->asString()]);
-        if ($query->isEmpty()) {
+        $resultSet = $qm->query('SELECT * FROM "pomm_foundation_todo" WHERE id = $*', [$id->asString()]);
+        if (!$resultSet instanceof Countable) {
+            throw new \RuntimeException('Unable to count result set');
+        }
+
+        if (0 === count($resultSet)) {
             return null;
         }
 
-        return Todo::fromData($query->current());
+        return Todo::fromData($resultSet->current());
     }
 
     public function save(Todo $todo): void
