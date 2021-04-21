@@ -22,6 +22,9 @@ use App\Infrastructure\Repository\Prooph\OpenedTodoReadModel;
 use Prooph\EventStore\Pdo\Projection\PostgresProjectionManager;
 use App\Domain\TodoWasOpened;
 use App\Domain\TodoWasClosed;
+use App\Infrastructure\Repository\DoctrineOrmTodoRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Setup;
 
 final class TodosRepositoryTest extends TestCase
 {
@@ -110,6 +113,16 @@ final class TodosRepositoryTest extends TestCase
                     ->run(false)
                 ;
             }
+        ];
+
+        $doctrineOrmTodoRepository = new DoctrineOrmTodoRepository(EntityManager::create(
+            ['url' => $GLOBALS['DOCTRINE_DBAL_URL']],
+            Setup::createXMLMetadataConfiguration([dirname(dirname(dirname(__DIR__))).'/config/doctrine'], true)
+        ));
+        yield DoctrineOrmTodosRepository::class => [
+            $doctrineOrmTodoRepository,
+            $doctrineOrmTodoRepository,
+            $executeSql($pdo)('TRUNCATE TABLE "doctrine_orm_todo"')
         ];
     }
 
