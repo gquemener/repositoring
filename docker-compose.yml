@@ -7,6 +7,7 @@ services:
             args:
                 phpunit_version: 9.5.4
                 phpstan_version: 0.12.83
+                deptrac_version: 0.14.1
                 wait_version: 2.8.0
         working_dir: /app
         volumes:

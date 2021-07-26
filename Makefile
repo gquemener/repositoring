@@ -14,6 +14,7 @@ test: phpunit.xml composer.lock
 .PHONY: check
 check: composer.lock
 	docker-compose run --rm php phpstan --no-progress --ansi
+	docker-compose run --rm php deptrac --ansi
 
 composer.lock:
 	docker-compose run --rm php composer install
