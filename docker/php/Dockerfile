@@ -26,4 +26,9 @@ RUN wget https://github.com/phpstan/phpstan/releases/download/$phpstan_version/p
 RUN chmod +x phpstan.phar
 RUN mv phpstan.phar /usr/bin/phpstan
 
+ARG deptrac_version
+RUN wget https://github.com/qossmic/deptrac/releases/download/$deptrac_version/deptrac.phar
+RUN chmod +x deptrac.phar
+RUN mv deptrac.phar /usr/bin/deptrac
+
 CMD ["php", "-v"]
