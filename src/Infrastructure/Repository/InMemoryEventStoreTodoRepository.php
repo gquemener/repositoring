@@ -37,7 +37,7 @@ final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRep
         $this->streams[$todo->id()->asString()] = array_merge($this->streams[$todo->id()->asString()], $todo->releaseEvents());
     }
 
-    public function opened(): array
+    public function opened(): iterable
     {
         $todos = [];
         foreach ($this->streams as $aggregateId => $history) {

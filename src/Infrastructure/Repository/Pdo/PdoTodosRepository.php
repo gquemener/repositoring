@@ -15,7 +15,7 @@ final class PdoTodosRepository implements TodosRepository
     ) {
     }
 
-    public function opened(): array
+    public function opened(): iterable
     {
         $stmt = $this->pdo->query('SELECT * FROM "pdo_opened_todo"', PDO::FETCH_ASSOC);
 
@@ -28,15 +28,11 @@ final class PdoTodosRepository implements TodosRepository
             throw CouldNotExecuteQuery::fromErrorInfo($this->pdo->errorInfo());
         }
 
-        return array_map(
-            function(array $data): OpenedTodo {
-                $todo = new OpenedTodo();
-                $todo->id = $data['id'];
-                $todo->description = $data['description'];
-
-                return $todo;
-            },
-            $resultSet
-        );
+        foreach ($resultSet as $data) {
+            $todo = new OpenedTodo();
+            $todo->id = $data['id'];
+            $todo->description = $data['description'];
+            yield $todo;
+        }
     }
 }

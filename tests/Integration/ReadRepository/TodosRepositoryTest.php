@@ -8,23 +8,25 @@ use App\Domain\Todo;
 use App\Domain\TodoDescription;
 use App\Domain\TodoId;
 use App\Domain\TodoRepository;
-use PHPUnit\Framework\TestCase;
-use PDO;
+use App\Domain\TodoWasClosed;
+use App\Domain\TodoWasOpened;
+use App\Infrastructure\Repository\DoctrineOrmTodoRepository;
+use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
+use App\Infrastructure\Repository\InMemoryTodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodosRepository;
-use App\Infrastructure\Repository\InMemoryTodoRepository;
-use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
-use App\Infrastructure\Repository\Prooph\ProophEventStoreTodoRepository;
-use Prooph\EventStore\Pdo\PostgresEventStore;
-use Prooph\Common\Messaging\FQCNMessageFactory;
-use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
+use App\Infrastructure\Repository\PommFoundationTodoRepository;
 use App\Infrastructure\Repository\Prooph\OpenedTodoReadModel;
-use Prooph\EventStore\Pdo\Projection\PostgresProjectionManager;
-use App\Domain\TodoWasOpened;
-use App\Domain\TodoWasClosed;
-use App\Infrastructure\Repository\DoctrineOrmTodoRepository;
+use App\Infrastructure\Repository\Prooph\ProophEventStoreTodoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
+use PDO;
+use PommProject\Foundation\Pomm;
+use PHPUnit\Framework\TestCase;
+use Prooph\Common\Messaging\FQCNMessageFactory;
+use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
+use Prooph\EventStore\Pdo\PostgresEventStore;
+use Prooph\EventStore\Pdo\Projection\PostgresProjectionManager;
 
 final class TodosRepositoryTest extends TestCase
 {
@@ -119,10 +121,20 @@ final class TodosRepositoryTest extends TestCase
             ['url' => $GLOBALS['DOCTRINE_DBAL_URL']],
             Setup::createXMLMetadataConfiguration([dirname(dirname(dirname(__DIR__))).'/config/doctrine'], true)
         ));
-        yield DoctrineOrmTodosRepository::class => [
+        yield DoctrineOrmTodoRepository::class => [
             $doctrineOrmTodoRepository,
             $doctrineOrmTodoRepository,
             $executeSql($pdo)('TRUNCATE TABLE "doctrine_orm_todo"')
+        ];
+
+        $pommFoundationTodoRepository = new PommFoundationTodoRepository((new Pomm([
+            'default' => ['dsn' => $GLOBALS['DOCTRINE_DBAL_URL']]
+        ]))->getSession('default'));
+
+        yield PommFoundationTodoRepository::class => [
+            $pommFoundationTodoRepository,
+            $pommFoundationTodoRepository,
+            $executeSql($pdo)('TRUNCATE TABLE "'.PommFoundationTodoRepository::TABLE.'"')
         ];
     }
 

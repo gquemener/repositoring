@@ -30,18 +30,15 @@ final class InMemoryTodoRepository implements TodoRepository, TodosRepository
         $this->storage[$todo->id()->asString()] = $todo->toData();
     }
 
-    public function opened(): array
+    public function opened(): iterable
     {
-        $todos = [];
         foreach ($this->storage as $data) {
             if ('opened' === $data['status']) {
                 $todo = new OpenedTodo();
                 $todo->id = $data['id'];
                 $todo->description = $data['description'];
-                $todos[] = $todo;
+                yield $todo;
             }
         }
-
-        return $todos;
     }
 }

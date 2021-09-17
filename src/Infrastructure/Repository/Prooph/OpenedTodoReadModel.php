@@ -81,7 +81,7 @@ final class OpenedTodoReadModel extends AbstractReadModel implements TodosReposi
         $stmt->execute($data);
     }
 
-    public function opened(): array
+    public function opened(): iterable
     {
         $stmt = $this->connection->query(sprintf('SELECT * FROM "%s"', self::TABLE_NAME), PDO::FETCH_ASSOC);
 
@@ -94,15 +94,11 @@ final class OpenedTodoReadModel extends AbstractReadModel implements TodosReposi
             throw CouldNotExecuteQuery::fromErrorInfo($this->connection->errorInfo());
         }
 
-        return array_map(
-            function(array $data): OpenedTodo {
-                $todo = new OpenedTodo();
-                $todo->id = $data['id'];
-                $todo->description = $data['description'];
-
-                return $todo;
-            },
-            $resultSet
-        );
+        foreach ($resultSet as $data) {
+            $todo = new OpenedTodo();
+            $todo->id = $data['id'];
+            $todo->description = $data['description'];
+            yield $todo;
+        }
     }
 }
