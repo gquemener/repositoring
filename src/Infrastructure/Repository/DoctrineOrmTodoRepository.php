@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\AbstractQuery;
 
 final class DoctrineOrmTodoRepository implements TodoRepository, TodosRepository
 {
@@ -44,23 +45,24 @@ final class DoctrineOrmTodoRepository implements TodoRepository, TodosRepository
         }
     }
 
-    public function opened(): array
+    public function opened(): iterable
     {
         $result = $this
             ->entityRepository
             ->createQueryBuilder('todo')
             ->where('todo.status.value = :status')
-            ->setParameter('status', TodoStatus::opened()->asString())
             ->getQuery()
-            ->getArrayResult()
+            ->toIterable(
+                ['status' => TodoStatus::opened()->asString()],
+                AbstractQuery::HYDRATE_ARRAY
+            )
         ;
 
-        return array_map(function(array $data): OpenedTodo {
+        foreach ($result as $data) {
             $todo = new OpenedTodo();
             $todo->id = $data['id'];
             $todo->description = $data['description.value'];
-
-            return $todo;
-        }, $result);
+            yield $todo;
+        }
     }
 }

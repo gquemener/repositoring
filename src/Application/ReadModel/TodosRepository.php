@@ -6,7 +6,7 @@ namespace App\Application\ReadModel;
 interface TodosRepository
 {
     /**
-     * @return OpenedTodo[]
+     * @return iterable<OpenedTodo>
      */
-    public function opened(): array;
+    public function opened(): iterable;
 }
