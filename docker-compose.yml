@@ -5,10 +5,10 @@ services:
         build:
             context: ./docker/php
             args:
-                phpunit_version: 9.5.7
-                phpstan_version: 0.12.93
-                deptrac_version: 0.14.1
-                wait_version: 2.8.0
+                phpunit_version: 9.5.9
+                phpstan_version: 0.12.99
+                deptrac_version: 0.15.2
+                wait_version: 2.9.0
         working_dir: /app
         volumes:
             - '.:/app'
