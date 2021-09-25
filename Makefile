@@ -13,11 +13,11 @@ test: phpunit.xml composer.lock
 
 .PHONY: check
 check: composer.lock
-	docker-compose run --rm php phpstan --no-progress --ansi
-	docker-compose run --rm php deptrac --ansi
+	docker-compose run --rm --no-deps php phpstan --no-progress --ansi
+	docker-compose run --rm --no-deps php deptrac --ansi
 
 composer.lock:
-	docker-compose run --rm php composer install
+	docker-compose run --rm --no-deps php composer install
 
 phpunit.xml:
 	cp phpunit.xml.dist phpunit.xml
