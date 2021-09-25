@@ -24,9 +24,6 @@ final class DoctrineOrmTodoRepository implements TodoRepository, TodosRepository
         private EntityManagerInterface $entityManager
     ) {
         $entityRepository = $this->entityManager->getRepository(Todo::class);
-        if (!$entityRepository instanceof EntityRepository) {
-            throw new \InvalidArgumentException();
-        }
         $this->entityRepository = $entityRepository;
     }
 

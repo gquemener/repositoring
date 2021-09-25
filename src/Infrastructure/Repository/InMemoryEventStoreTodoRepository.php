@@ -23,9 +23,7 @@ final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRep
             return null;
         }
 
-        $todo = Todo::replayHistory($this->streams[$id->asString()]);
-
-        return $todo;
+        return Todo::replayHistory($this->streams[$id->asString()]);
     }
 
     public function save(Todo $todo): void
@@ -40,7 +38,7 @@ final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRep
     public function opened(): iterable
     {
         $todos = [];
-        foreach ($this->streams as $aggregateId => $history) {
+        foreach ($this->streams as $history) {
             foreach ($history as $event) {
                 switch (get_class($event)) {
                     case TodoWasOpened::class:
