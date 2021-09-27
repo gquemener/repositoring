@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Repository\Prooph;
@@ -51,8 +52,7 @@ final class ProophEventStoreTodoRepository implements TodoRepository
         $events = array_map(
             fn (DomainEvent $event) => $event
                 ->withAddedMetadata('_aggregate_id', $todo->id()->asString())
-                ->withAddedMetadata('_aggregate_type', Todo::class)
-            ,
+                ->withAddedMetadata('_aggregate_type', Todo::class),
             $todo->releaseEvents()
         );
         $this->store->appendTo($name, new \ArrayIterator($events));
