@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
@@ -36,7 +37,7 @@ final class DoctrineDbalTodoRepository implements TodoRepository
         INSERT INTO "doctrine_dbal_todo" ("id", "description", "status") VALUES (:id, :description, :status)
         ON CONFLICT ON CONSTRAINT "doctrine_dbal_todo_id" DO UPDATE SET status = :status
         SQL;
-        try{
+        try {
             $this->dbal->executeStatement($sql, $todo->toData());
             $this->dbal->commit();
         } catch (\Exception $e) {

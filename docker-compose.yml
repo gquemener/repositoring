@@ -9,6 +9,7 @@ services:
                 phpstan_version: 0.12.99
                 deptrac_version: 0.15.2
                 wait_version: 2.9.0
+                php_cs_fixer_version: v3.1.0
         working_dir: /app
         volumes:
             - '.:/app'

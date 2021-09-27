@@ -15,6 +15,7 @@ test: phpunit.xml composer.lock
 check: composer.lock
 	docker-compose run --rm --no-deps php phpstan --no-progress --ansi
 	docker-compose run --rm --no-deps php deptrac --ansi
+	docker-compose run --rm --no-deps php php-cs-fixer fix --dry-run --ansi --show-progress=none --diff
 
 composer.lock:
 	docker-compose run --rm --no-deps php composer install

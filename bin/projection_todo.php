@@ -23,7 +23,7 @@ $readModel = new OpenedTodoReadModel($pdo);
 
 $projection = $projectionManager->createReadModelProjection('opened_todo', $readModel, [ReadModelProjector::OPTION_PCNTL_DISPATCH => true]);
 
-pcntl_signal(SIGINT, function() use ($projection) {
+pcntl_signal(SIGINT, function () use ($projection) {
     $projection->stop();
 
     exit(0);

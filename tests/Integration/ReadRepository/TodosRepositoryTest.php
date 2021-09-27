@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Integration\ReadRepository;
@@ -64,7 +65,7 @@ final class TodosRepositoryTest extends TestCase
         $inMemoryEventStoreTodoRepository = new InMemoryEventStoreTodoRepository();
         yield InMemoryEventStoreTodoRepository::class => [$inMemoryEventStoreTodoRepository, $inMemoryEventStoreTodoRepository];
 
-        $executeSql = fn(PDO $conn): callable => fn($sql): callable => fn (): int => $conn->exec($sql);
+        $executeSql = fn (PDO $conn): callable => fn ($sql): callable => fn (): int => $conn->exec($sql);
 
         $pdo = new PDO($GLOBALS['PDO_DSN']);
         yield PdoTodosRepository::class => [
@@ -92,7 +93,7 @@ final class TodosRepositoryTest extends TestCase
                     END;
                 $$;
             SQL),
-            function() use ($executeSql, $pdo, $eventStore, $openedTodoReadModel) {
+            function () use ($executeSql, $pdo, $eventStore, $openedTodoReadModel) {
                 $executeSql($pdo)('TRUNCATE TABLE "prooph_read_opened_todo"');
 
                 $projectionManager = new PostgresProjectionManager($eventStore, $pdo);

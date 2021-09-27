@@ -31,4 +31,9 @@ RUN wget https://github.com/qossmic/deptrac/releases/download/$deptrac_version/d
 RUN chmod +x deptrac.phar
 RUN mv deptrac.phar /usr/bin/deptrac
 
+ARG php_cs_fixer_version
+RUN wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/$php_cs_fixer_version/php-cs-fixer.phar
+RUN chmod +x php-cs-fixer.phar
+RUN mv php-cs-fixer.phar /usr/bin/php-cs-fixer
+
 CMD ["php", "-v"]

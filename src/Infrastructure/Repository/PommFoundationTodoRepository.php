@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
@@ -57,7 +58,7 @@ final class PommFoundationTodoRepository implements TodoRepository, TodosReposit
         $qm = $this->session->getQueryManager();
         $it = $qm->query('SELECT "id", "description" FROM "'.self::TABLE.'" WHERE "status" = \'opened\'');
         foreach ($it as $data) {
-            $todo = new OpenedTodo;
+            $todo = new OpenedTodo();
             $todo->id = $data['id'];
             $todo->description = $data['description'];
             yield $todo;
