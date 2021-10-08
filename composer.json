@@ -21,6 +21,8 @@
         "doctrine/orm": "^2.8",
         "pomm-project/model-manager": "^2.0",
         "prooph/pdo-event-store": "^1.13",
-        "symfony/cache": "^5.3"
+        "symfony/cache": "^5.3",
+        "cycle/orm": "^1.6",
+        "cycle/schema-builder": "^1.2"
     }
 }
