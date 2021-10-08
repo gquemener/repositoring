@@ -118,6 +118,25 @@ final class TodosRepositoryTest extends TestCase
             }
         ];
 
+        yield ProophEventStoreTodoRepository::class => [
+            new ProophEventStoreTodoRepository($eventStore),
+            new ProophEventStoreTodoRepository($eventStore),
+            $executeSql($pdo)(<<<SQL
+                DO $$
+                    DECLARE
+                        name text;
+                    BEGIN
+                        FOR name IN SELECT stream_name FROM event_streams
+                        LOOP
+                            EXECUTE 'DROP TABLE ' || quote_ident(name);
+                        END LOOP;
+                        TRUNCATE TABLE "event_streams";
+                    END;
+                $$;
+            SQL),
+            null
+        ];
+
         $doctrineOrmTodoRepository = new DoctrineOrmTodoRepository(EntityManager::create(
             ['url' => $GLOBALS['DOCTRINE_DBAL_URL']],
             Setup::createXMLMetadataConfiguration([dirname(dirname(dirname(__DIR__))).'/config/doctrine'], true)

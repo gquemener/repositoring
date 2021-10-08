@@ -13,8 +13,12 @@ use Prooph\EventStore\Stream;
 use Prooph\Common\Messaging\DomainEvent;
 use Prooph\EventStore\Metadata\MetadataMatcher;
 use Prooph\EventStore\Metadata\Operator;
+use App\Application\ReadModel\TodosRepository;
+use App\Domain\TodoWasOpened;
+use App\Domain\TodoWasClosed;
+use App\Application\ReadModel\OpenedTodo;
 
-final class ProophEventStoreTodoRepository implements TodoRepository
+final class ProophEventStoreTodoRepository implements TodoRepository, TodosRepository
 {
     private const STREAM_NAME = 'todo';
 
@@ -61,5 +65,32 @@ final class ProophEventStoreTodoRepository implements TodoRepository
     private function getStreamName(): StreamName
     {
         return new StreamName(self::STREAM_NAME);
+    }
+
+    public function opened(): iterable
+    {
+        $name = $this->getStreamName();
+
+        $matcher = (new MetadataMatcher())
+            ->withMetadataMatch('_aggregate_type', Operator::EQUALS(), Todo::class)
+        ;
+
+        $todos = [];
+        foreach ($this->store->load($name, 1, null, $matcher) as $event) {
+            switch ($event::class) {
+                case TodoWasOpened::class:
+                    $todo = new OpenedTodo();
+                    $todo->id = $event->id->asString();
+                    $todo->description = $event->description->asString();
+                    $todos[$todo->id] = $todo;
+                    break;
+
+                case TodoWasClosed::class:
+                    unset($todos[$event->id->asString()]);
+                    break;
+            }
+        }
+
+        return $todos;
     }
 }
