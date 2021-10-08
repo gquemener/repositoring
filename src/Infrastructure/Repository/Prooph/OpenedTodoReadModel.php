@@ -13,7 +13,7 @@ use App\Infrastructure\Repository\Pdo\CouldNotExecuteQuery;
 
 final class OpenedTodoReadModel extends AbstractReadModel implements TodosRepository
 {
-    private const TABLE_NAME = 'prooph_read_opened_todo';
+    public const TABLE_NAME = 'prooph_read_opened_todo';
 
     public function __construct(
         private PDO $connection
