@@ -9,10 +9,11 @@ use App\Domain\TodoId;
 use App\Domain\Todo;
 use App\Application\ReadModel\TodosRepository;
 use App\Application\ReadModel\OpenedTodo;
+use App\Infrastructure\Repository\CannotSaveTodo;
 
 final class InMemoryTodoRepository implements TodoRepository, TodosRepository
 {
-    /** @var array<string, array{'id': string, 'description': string, 'status': string}> */
+    /** @var array<string, array{'id': string, 'description': string, 'status': string, 'version': int}> */
     private array $storage = [];
 
     public function get(TodoId $id): ?Todo
@@ -28,7 +29,14 @@ final class InMemoryTodoRepository implements TodoRepository, TodosRepository
 
     public function save(Todo $todo): void
     {
-        $this->storage[$todo->id()->asString()] = $todo->toData();
+        $data = $todo->toData();
+        $key = $todo->id()->asString();
+        if (isset($this->storage[$key])) {
+            if ($this->storage[$key]['version'] >= $data['version']) {
+                throw CannotSaveTodo::becauseEntityHasChangedSinceLastRetrieval($todo->id());
+            }
+        }
+        $this->storage[$todo->id()->asString()] = $data;
     }
 
     public function opened(): iterable
