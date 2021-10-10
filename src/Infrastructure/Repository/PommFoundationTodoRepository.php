@@ -11,6 +11,8 @@ use PommProject\Foundation\Session;
 use Countable;
 use App\Application\ReadModel\TodosRepository;
 use App\Application\ReadModel\OpenedTodo;
+use PommProject\Foundation\QueryManager\QueryManagerInterface;
+use App\Infrastructure\Repository\CannotSaveTodo;
 
 final class PommFoundationTodoRepository implements TodoRepository, TodosRepository
 {
@@ -41,15 +43,18 @@ final class PommFoundationTodoRepository implements TodoRepository, TodosReposit
     {
         $qm = $this->session->getQueryManager();
 
+
         $table = self::TABLE;
         $sql = <<<SQL
-        INSERT INTO "$table" ("id", "description", "status") VALUES ($*, $*, $*)
-        ON CONFLICT ON CONSTRAINT "pomm_foundation_todo_id" DO UPDATE SET "status" = $*
+        INSERT INTO "$table" ("id", "description", "status", "version") VALUES ($*, $*, $*, $*)
+            ON CONFLICT ON CONSTRAINT "pomm_foundation_todo_id"
+                DO UPDATE SET "status" = $*, "version" = $*
         SQL;
 
         $data = $todo->toData();
         $qm->query('BEGIN');
-        $qm->query($sql, [$data['id'], $data['description'], $data['status'], $data['status']]);
+        $this->checkConcurrencyLock($qm, $todo->id(), $data['version']);
+        $qm->query($sql, [$data['id'], $data['description'], $data['status'], $data['version'], $data['status'], $data['version']]);
         $qm->query('COMMIT');
     }
 
@@ -62,6 +67,21 @@ final class PommFoundationTodoRepository implements TodoRepository, TodosReposit
             $todo->id = $data['id'];
             $todo->description = $data['description'];
             yield $todo;
+        }
+    }
+
+    private function checkConcurrencyLock(QueryManagerInterface $qm, TodoId $id, int $version): void
+    {
+        $res = iterator_to_array($qm->query(
+            'SELECT COUNT(*) FROM "'.self::TABLE.'" WHERE id = $* AND version >= $* LIMIT 1',
+            [
+                $id->asString(),
+                $version,
+            ]
+        ));
+
+        if (0 !== $res[0]['count']) {
+            throw CannotSaveTodo::becauseEntityHasChangedSinceLastRetrieval($id);
         }
     }
 }

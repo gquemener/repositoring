@@ -10,6 +10,7 @@ use App\Domain\TodoDescription;
 use App\Domain\TodoId;
 use App\Domain\TodoRepository;
 use PHPUnit\Framework\TestCase;
+use App\Infrastructure\Repository\CannotSaveTodo;
 
 abstract class TodoRepositoryTest extends TestCase
 {
@@ -36,6 +37,31 @@ abstract class TodoRepositoryTest extends TestCase
         }
 
         throw new \RuntimeException('Expecting to not be able to close already closed todo.');
+    }
+
+    public function testOptimisticConcurrency(): void
+    {
+        $this->expectException(CannotSaveTodo::class);
+        $repository = $this->getRepository();
+        $id = TodoId::generate();
+
+        $todo = Todo::open($id, TodoDescription::fromString('Buy milk'));
+        $repository->save($todo);
+
+        $this->concurrentlyUpdate($id);
+
+        $todo->close();
+        $repository->save($todo);
+    }
+
+    private function concurrentlyUpdate(TodoId $id): void
+    {
+        $repository = $this->getRepository();
+        if (null === $todo = $repository->get($id)) {
+            throw new \Exception('Coult not retrieve aggregate.');
+        }
+        $todo->close();
+        $repository->save($todo);
     }
 
     abstract protected function getRepository(): TodoRepository;

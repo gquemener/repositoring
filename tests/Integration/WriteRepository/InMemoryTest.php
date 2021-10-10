@@ -9,8 +9,15 @@ use App\Infrastructure\Repository\InMemoryTodoRepository;
 
 final class InMemoryTest extends TodoRepositoryTest
 {
+    private InMemoryTodoRepository $repository;
+
+    protected function setUp(): void
+    {
+        $this->repository = new InMemoryTodoRepository();
+    }
+
     protected function getRepository(): TodoRepository
     {
-        return new InMemoryTodoRepository();
+        return $this->repository;
     }
 }

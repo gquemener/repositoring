@@ -48,7 +48,7 @@ final class Todo
     }
 
     /**
-     * @param array{'id': string, 'description': string, 'status': string} $data
+     * @param array{'id': string, 'description': string, 'status': string, 'version': int} $data
      */
     public static function fromData(array $data): self
     {
@@ -56,12 +56,13 @@ final class Todo
         $self->id = TodoId::fromString($data['id'])->asString();
         $self->description = TodoDescription::fromString($data['description']);
         $self->status = TodoStatus::fromString($data['status']);
+        $self->version = $data['version'];
 
         return $self;
     }
 
     /**
-     * @return array{'id': string, 'description': string, 'status': string}
+     * @return array{'id': string, 'description': string, 'status': string, 'version': int}
      */
     public function toData(): array
     {
@@ -69,6 +70,7 @@ final class Todo
             'id' => $this->id,
             'description' => $this->description->asString(),
             'status' => $this->status->asString(),
+            'version' => $this->version,
         ];
     }
 

@@ -12,6 +12,7 @@ use App\Application\ReadModel\OpenedTodo;
 use App\Domain\TodoWasOpened;
 use App\Domain\TodoWasClosed;
 use Prooph\Common\Messaging\DomainEvent;
+use Prooph\Common\Messaging\Message;
 
 final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRepository
 {
@@ -33,7 +34,16 @@ final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRep
             $this->streams[$todo->id()->asString()] = [];
         }
 
-        $this->streams[$todo->id()->asString()] = array_merge($this->streams[$todo->id()->asString()], $todo->releaseEvents());
+        $newStream = array_merge($this->streams[$todo->id()->asString()], $todo->releaseEvents());
+        $versions = array_map(
+            fn (Message $event): int => $event->metadata()['_aggregate_version'],
+            $newStream
+        );
+        if (count($versions) !== count(array_unique($versions))) {
+            throw CannotSaveTodo::becauseEntityHasChangedSinceLastRetrieval($todo->id());
+        }
+
+        $this->streams[$todo->id()->asString()] = $newStream;
     }
 
     public function opened(): iterable

@@ -17,6 +17,8 @@ use App\Application\ReadModel\TodosRepository;
 use App\Domain\TodoWasOpened;
 use App\Domain\TodoWasClosed;
 use App\Application\ReadModel\OpenedTodo;
+use Prooph\EventStore\Exception\ConcurrencyException;
+use App\Infrastructure\Repository\CannotSaveTodo;
 
 final class ProophEventStoreTodoRepository implements TodoRepository, TodosRepository
 {
@@ -59,7 +61,11 @@ final class ProophEventStoreTodoRepository implements TodoRepository, TodosRepos
                 ->withAddedMetadata('_aggregate_type', Todo::class),
             $todo->releaseEvents()
         );
-        $this->store->appendTo($name, new \ArrayIterator($events));
+        try {
+            $this->store->appendTo($name, new \ArrayIterator($events));
+        } catch (ConcurrencyException $e) {
+            throw CannotSaveTodo::becauseEntityHasChangedSinceLastRetrieval($todo->id(), $e);
+        }
     }
 
     private function getStreamName(): StreamName
