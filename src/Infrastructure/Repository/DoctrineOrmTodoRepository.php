@@ -45,6 +45,7 @@ final class DoctrineOrmTodoRepository implements TodoRepository, TodosRepository
 
     public function opened(): iterable
     {
+        /** @var array<array{'id': string, 'description.value': string}> */
         $result = $this
             ->entityRepository
             ->createQueryBuilder('todo')

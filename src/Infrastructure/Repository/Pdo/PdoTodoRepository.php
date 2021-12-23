@@ -23,7 +23,10 @@ final class PdoTodoRepository implements TodoRepository
     {
         $stmt = $this->pdo->prepare('SELECT * from "pdo_todo" WHERE id = :id');
         $stmt->execute([':id' => $id->asString()]);
-        if (false === $res = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        /** @var array{id: string, description: string, status: string}|false */
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (false === $res) {
             return null;
         }
 

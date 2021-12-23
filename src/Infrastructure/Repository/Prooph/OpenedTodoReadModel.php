@@ -39,7 +39,14 @@ final class OpenedTodoReadModel extends AbstractReadModel implements TodosReposi
             self::TABLE_NAME
         ));
 
-        return $stmt instanceof PDOStatement && $stmt->fetch()[0] > 0;
+        if (!$stmt instanceof PDOStatement) {
+            return false;
+        }
+
+        /** @var array<int> */
+        $res = $stmt->fetch();
+
+        return $res[0] > 0;
     }
 
     public function reset(): void
