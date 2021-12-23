@@ -7,7 +7,7 @@ services:
             args:
                 phpunit_version: 9.5.10
                 phpstan_version: 0.12.99
-                deptrac_version: 0.15.2
+                deptrac_version: 0.18.0
                 wait_version: 2.9.0
                 php_cs_fixer_version: v3.1.0
         working_dir: /app
