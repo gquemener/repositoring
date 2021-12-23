@@ -17,10 +17,10 @@
         "psr-4": { "App\\Tests\\": "tests/" }
     },
     "require": {
-        "symfony/uid": "^5.2",
         "doctrine/orm": "^2.8",
         "pomm-project/model-manager": "^2.0",
         "prooph/pdo-event-store": "^1.13",
-        "symfony/cache": "^5.3"
+        "symfony/cache": "^6.0",
+        "symfony/uid": "^6.0"
     }
 }
