@@ -10,6 +10,7 @@ final class Todo
 {
     private string $id; // Doctrine ORM prevents using embeddable TodoId as entity identifier
 
+    /** @phpstan-ignore-next-line */
     private int $no; // Doctrine ORM version
 
     private int $version = 1; // Prooph ES version
