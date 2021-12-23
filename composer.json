@@ -22,5 +22,10 @@
         "prooph/pdo-event-store": "^1.13",
         "symfony/cache": "^6.0",
         "symfony/uid": "^6.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     }
 }
