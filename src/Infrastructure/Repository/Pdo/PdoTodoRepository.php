@@ -24,7 +24,7 @@ final class PdoTodoRepository implements TodoRepository
         $stmt = $this->pdo->prepare('SELECT * from "pdo_todo" WHERE id = :id');
         $stmt->execute([':id' => $id->asString()]);
 
-        /** @var array{id: string, description: string, status: string}|false */
+        /** @var array{id: string, description: string, status: string, version: int}|false */
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         if (false === $res) {
             return null;
@@ -63,10 +63,12 @@ final class PdoTodoRepository implements TodoRepository
             'id' => $id->asString(),
             'version' => $version
         ]);
+
         if (false === $res = $stmt->fetch(PDO::FETCH_NUM)) {
             throw new LogicException('Expected concurrency check query failed.');
         }
 
+        /** @var array<int> $res */
         if (0 !== $res[0]) {
             throw CannotSaveTodo::becauseEntityHasChangedSinceLastRetrieval($id);
         }
