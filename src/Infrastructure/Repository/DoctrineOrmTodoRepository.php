@@ -52,7 +52,7 @@ final class DoctrineOrmTodoRepository implements TodoRepository, TodosRepository
             ->where('todo.status.value = :status')
             ->getQuery()
             ->toIterable(
-                ['status' => TodoStatus::opened()->asString()],
+                ['status' => TodoStatus::OPENED->value],
                 AbstractQuery::HYDRATE_ARRAY
             )
         ;

@@ -41,7 +41,7 @@ final class Todo
 
     public function close(): void
     {
-        if ($this->status->equals(TodoStatus::closed())) {
+        if ($this->status === TodoStatus::CLOSED) {
             throw CannotCloseTodo::becauseTodoIsAlreadyClosed($this->id());
         }
 
@@ -56,7 +56,7 @@ final class Todo
         $self = new self();
         $self->id = TodoId::fromString($data['id'])->asString();
         $self->description = TodoDescription::fromString($data['description']);
-        $self->status = TodoStatus::fromString($data['status']);
+        $self->status = TodoStatus::from($data['status']);
         $self->version = $data['version'];
 
         return $self;
@@ -70,7 +70,7 @@ final class Todo
         return [
             'id' => $this->id,
             'description' => $this->description->asString(),
-            'status' => $this->status->asString(),
+            'status' => $this->status->value,
             'version' => $this->version,
         ];
     }
@@ -111,12 +111,12 @@ final class Todo
     {
         $this->id = $event->id->asString();
         $this->description = $event->description;
-        $this->status = TodoStatus::opened();
+        $this->status = TodoStatus::OPENED;
     }
 
     private function onTodoWasClosed(TodoWasClosed $event): void
     {
-        $this->status = TodoStatus::closed();
+        $this->status = TodoStatus::CLOSED;
     }
 
     private function apply(object $event): void
