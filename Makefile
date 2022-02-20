@@ -9,7 +9,7 @@ export GID
 
 .PHONY: test
 test: phpunit.xml composer.lock
-	docker-compose run --rm php sh -c "/usr/bin/wait && phpunit --colors=always --testdox"
+	docker-compose run --rm php sh -c "/usr/bin/wait && phpunit"
 
 .PHONY: check
 check: composer.lock

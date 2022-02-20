@@ -10,6 +10,8 @@
          beStrictAboutTodoAnnotatedTests="true"
          failOnRisky="true"
          failOnWarning="true"
+         testdox="true"
+         colors="true"
          verbose="true">
     <php>
         <var name="PDO_DSN" value="pgsql:host=postgres;port=5432;dbname=repositoring;user=bruce;password=mypass" />
