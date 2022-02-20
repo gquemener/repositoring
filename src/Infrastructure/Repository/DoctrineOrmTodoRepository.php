@@ -49,7 +49,7 @@ final class DoctrineOrmTodoRepository implements TodoRepository, TodosRepository
         $result = $this
             ->entityRepository
             ->createQueryBuilder('todo')
-            ->where('todo.status.value = :status')
+            ->where('todo.status = :status')
             ->getQuery()
             ->toIterable(
                 ['status' => TodoStatus::OPENED->value],

@@ -1,8 +1,8 @@
-<!-- config/xml/Product.dcm.xml -->
-<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
-    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="App\Domain\Todo" table="doctrine_orm_todo">
         <id name="id" type="guid">
@@ -12,7 +12,7 @@
         <field name="no" type="integer" version="true" />
 
         <embedded name="description" class="App\Domain\TodoDescription" />
-        <embedded name="status" class="App\Domain\TodoStatus" />
+        <field name="status" type="string" enum-type="App\Domain\TodoStatus" />
     </entity>
 
 </doctrine-mapping>

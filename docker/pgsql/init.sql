@@ -19,7 +19,7 @@ CREATE TABLE doctrine_orm_todo (
     id UUID NOT NULL,
     no INT DEFAULT 1 NOT NULL,
     description_value TEXT NOT NULL,
-    status_value TEXT NOT NULL,
+    status TEXT NOT NULL,
     PRIMARY KEY(id)
 );
 
