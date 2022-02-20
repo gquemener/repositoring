@@ -10,7 +10,7 @@ RUN pecl install xdebug
 COPY xdebug.ini /usr/local/etc/php/conf.d/
 RUN apk del .build-deps
 
-COPY --from=composer:2.2.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.2.6 /usr/bin/composer /usr/bin/composer
 
 ARG phpunit_version
 RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar
