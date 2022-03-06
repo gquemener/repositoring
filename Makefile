@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-export SHELL = /bin/sh
+export SHELL = /bin/bash
 export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
 
 .ONESHELL:
