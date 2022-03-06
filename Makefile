@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := all
-SHELL = /bin/sh
+export SHELL = /bin/sh
+export SHELLOPTS:=$(if $(SHELLOPTS),$(SHELLOPTS):)pipefail:errexit
+
+.ONESHELL:
 
 UID := $(shell id -u)
 GID := $(shell id -g)
@@ -30,4 +33,9 @@ clean:
 	docker-compose down
 
 .PHONY: all
-all: check test clean
+all:
+	function tearDown {
+		$(MAKE) clean
+	}
+	trap tearDown EXIT
+	$(MAKE) -k check test
