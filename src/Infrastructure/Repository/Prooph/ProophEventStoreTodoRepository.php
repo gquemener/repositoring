@@ -82,6 +82,8 @@ final class ProophEventStoreTodoRepository implements TodoRepository, TodosRepos
         ;
 
         $todos = [];
+
+        /** @var DomainEvent $event */
         foreach ($this->store->load($name, 1, null, $matcher) as $event) {
             switch ($event::class) {
                 case TodoWasOpened::class:
