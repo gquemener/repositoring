@@ -7,7 +7,7 @@ namespace App\Domain;
 final class TodoDescription
 {
     private function __construct(
-        private string $value
+        private readonly string $value
     ) {
     }
 

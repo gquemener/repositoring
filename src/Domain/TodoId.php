@@ -9,7 +9,7 @@ use Symfony\Component\Uid\Uuid;
 final class TodoId
 {
     public function __construct(
-        private string $value
+        private readonly string $value
     ) {
     }
 
