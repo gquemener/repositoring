@@ -23,13 +23,13 @@ final class OpenedTodoReadModel extends AbstractReadModel implements TodosReposi
     public function init(): void
     {
         $sql = <<<SQL
-            CREATE TABLE "%s" (
+            CREATE TABLE "%1\$s" (
                 "id" uuid NOT NULL,
                 "description" text NOT NULL,
-                CONSTRAINT "%s_id" PRIMARY KEY ("id")
+                CONSTRAINT "%1\$s_id" PRIMARY KEY ("id")
             )
         SQL;
-        $this->connection->exec(sprintf($sql, self::TABLE_NAME, self::TABLE_NAME));
+        $this->connection->exec(sprintf($sql, self::TABLE_NAME));
     }
 
     public function isInitialized(): bool
