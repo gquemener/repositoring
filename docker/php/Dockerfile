@@ -3,7 +3,6 @@ FROM php:8.1.4-cli-alpine
 
 RUN apk add postgresql-dev
 RUN docker-php-ext-install pdo_pgsql
-RUN docker-php-ext-install pgsql
 RUN docker-php-ext-install pcntl
 
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS
