@@ -11,16 +11,20 @@ export UID
 export GID
 
 .PHONY: test
-test: phpunit.xml composer.lock
+test: phpunit.xml vendor
 	docker-compose run --rm php sh -c "/usr/bin/wait && phpunit"
 
 .PHONY: check
-check: composer.lock
+check: vendor
 	docker-compose run --rm --no-deps php phpstan --no-progress --ansi
 	docker-compose run --rm --no-deps php deptrac --ansi
 	docker-compose run --rm --no-deps php php-cs-fixer fix --dry-run --ansi --show-progress=none --diff
 
-composer.lock:
+.PHONY: update-deps
+update-deps:
+	docker-compose run --rm --no-deps php composer update
+
+vendor:
 	docker-compose run --rm --no-deps php composer install
 
 phpunit.xml:
@@ -28,8 +32,8 @@ phpunit.xml:
 
 .PHONY: clean
 clean:
-	-rm phpunit.xml
-	-rm composer.lock
+	rm -f phpunit.xml
+	rm -rf vendor
 	docker-compose down
 
 .PHONY: all

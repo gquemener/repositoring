@@ -1,5 +1,4 @@
 /vendor/
 /.phpunit.cache
-/composer.lock
 /.deptrac.cache
 /.php-cs-fixer.cache
