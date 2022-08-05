@@ -9,16 +9,7 @@ use App\Domain\Todo;
 use App\Domain\TodoDescription;
 use App\Domain\TodoId;
 use App\Domain\TodoRepository;
-use App\Domain\TodoWasClosed;
-use App\Domain\TodoWasOpened;
-use App\Infrastructure\Repository\Prooph\OpenedTodoReadModel;
-use App\Infrastructure\Repository\Prooph\ProophEventStoreTodoRepository;
-use PDO;
 use PHPUnit\Framework\TestCase;
-use Prooph\Common\Messaging\FQCNMessageFactory;
-use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
-use Prooph\EventStore\Pdo\PostgresEventStore;
-use Prooph\EventStore\Pdo\Projection\PostgresProjectionManager;
 
 abstract class TodosRepositoryTest extends TestCase
 {
