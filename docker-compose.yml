@@ -6,9 +6,9 @@ services:
             context: ./docker/php
             args:
                 deptrac_version: 0.24.0
-                php_cs_fixer_version: v3.9.5
-                phpstan_version: 1.8.2
-                phpunit_version: 9.5.21
+                php_cs_fixer_version: v3.11.0
+                phpstan_version: 1.8.4
+                phpunit_version: 9.5.24
                 wait_version: 2.9.0
         working_dir: /app
         volumes:
