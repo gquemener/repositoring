@@ -10,7 +10,6 @@ use App\Domain\TodoRepository;
 use App\Infrastructure\Repository\CannotSaveTodo;
 use LogicException;
 use PDO;
-use PDOStatement;
 
 final class PdoTodoRepository implements TodoRepository
 {
@@ -50,7 +49,7 @@ final class PdoTodoRepository implements TodoRepository
             $res = $stmt->execute($data);
             $this->pdo->commit();
         } catch (\Exception $e) {
-            $this->pdo->rollback();
+            $this->pdo->rollBack();
 
             throw $e;
         }
