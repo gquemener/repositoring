@@ -13,7 +13,7 @@ use Prooph\EventStore\EventStore;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
 use Prooph\EventStore\Pdo\PostgresEventStore;
 
-final class ProophEventStoreTest extends TodosRepositoryTest
+final class ProophEventStoreTest extends TodosRepositoryTestCase
 {
     private EventStore $eventStore;
 

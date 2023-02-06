@@ -8,7 +8,7 @@ use App\Application\ReadModel\TodosRepository;
 use App\Infrastructure\Repository\InMemoryTodoRepository;
 use App\Domain\TodoRepository;
 
-final class InMemoryTest extends TodosRepositoryTest
+final class InMemoryTest extends TodosRepositoryTestCase
 {
     private InMemoryTodoRepository $repository;
 

@@ -9,7 +9,7 @@ use App\Infrastructure\Repository\DoctrineOrmTodoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 
-final class DoctrineOrmTest extends TodoRepositoryTest
+final class DoctrineOrmTest extends TodoRepositoryTestCase
 {
     protected function getRepository(): TodoRepository
     {

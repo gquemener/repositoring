@@ -17,7 +17,7 @@ use App\Infrastructure\Repository\Prooph\OpenedTodoReadModel;
 use App\Domain\TodoWasOpened;
 use App\Domain\TodoWasClosed;
 
-final class OpenedTodoReadModelTest extends TodosRepositoryTest
+final class OpenedTodoReadModelTest extends TodosRepositoryTestCase
 {
     private PDO $pdo;
     private EventStore $eventStore;

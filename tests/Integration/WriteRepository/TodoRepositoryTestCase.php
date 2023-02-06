@@ -12,7 +12,7 @@ use App\Domain\TodoRepository;
 use PHPUnit\Framework\TestCase;
 use App\Infrastructure\Repository\CannotSaveTodo;
 
-abstract class TodoRepositoryTest extends TestCase
+abstract class TodoRepositoryTestCase extends TestCase
 {
     public function testTodoPersistence(): void
     {

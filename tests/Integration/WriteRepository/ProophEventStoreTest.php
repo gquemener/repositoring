@@ -11,7 +11,7 @@ use Prooph\Common\Messaging\FQCNMessageFactory;
 use Prooph\EventStore\Pdo\PersistenceStrategy\PostgresSingleStreamStrategy;
 use Prooph\EventStore\Pdo\PostgresEventStore;
 
-final class ProophEventStoreTest extends TodoRepositoryTest
+final class ProophEventStoreTest extends TodoRepositoryTestCase
 {
     protected function getRepository(): TodoRepository
     {

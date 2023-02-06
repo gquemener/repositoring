@@ -11,7 +11,7 @@ use App\Application\ReadModel\TodosRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 
-final class DoctrineOrmTest extends TodosRepositoryTest
+final class DoctrineOrmTest extends TodosRepositoryTestCase
 {
     private EntityManagerInterface $em;
 

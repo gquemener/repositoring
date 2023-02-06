@@ -8,7 +8,7 @@ use App\Domain\TodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
 use PDO;
 
-final class PdoTest extends TodoRepositoryTest
+final class PdoTest extends TodoRepositoryTestCase
 {
     protected function getRepository(): TodoRepository
     {

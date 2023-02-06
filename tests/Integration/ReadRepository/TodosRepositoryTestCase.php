@@ -11,7 +11,7 @@ use App\Domain\TodoId;
 use App\Domain\TodoRepository;
 use PHPUnit\Framework\TestCase;
 
-abstract class TodosRepositoryTest extends TestCase
+abstract class TodosRepositoryTestCase extends TestCase
 {
     public function testListOpenedTodos(): void
     {

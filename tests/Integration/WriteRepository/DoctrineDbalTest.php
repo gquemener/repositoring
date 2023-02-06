@@ -8,7 +8,7 @@ use App\Domain\TodoRepository;
 use App\Infrastructure\Repository\DoctrineDbalTodoRepository;
 use Doctrine\DBAL\DriverManager;
 
-final class DoctrineDbalTest extends TodoRepositoryTest
+final class DoctrineDbalTest extends TodoRepositoryTestCase
 {
     protected function getRepository(): TodoRepository
     {

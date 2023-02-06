@@ -7,7 +7,7 @@ namespace App\Tests\Integration\WriteRepository;
 use App\Domain\TodoRepository;
 use App\Infrastructure\Repository\InMemoryEventStoreTodoRepository;
 
-final class InMemoryEventStoreTest extends TodoRepositoryTest
+final class InMemoryEventStoreTest extends TodoRepositoryTestCase
 {
     private InMemoryEventStoreTodoRepository $repository;
 

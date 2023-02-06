@@ -10,7 +10,7 @@ use App\Infrastructure\Repository\Pdo\PdoTodoRepository;
 use App\Infrastructure\Repository\Pdo\PdoTodosRepository;
 use PDO;
 
-final class PdoTest extends TodosRepositoryTest
+final class PdoTest extends TodosRepositoryTestCase
 {
     private PDO $pdo;
 

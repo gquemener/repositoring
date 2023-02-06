@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheResultFile=".phpunit.cache/test-results"
          executionOrder="random"
-         forceCoversAnnotation="false"
-         beStrictAboutCoversAnnotation="false"
          beStrictAboutOutputDuringTests="false"
-         beStrictAboutTodoAnnotatedTests="true"
          failOnRisky="true"
          failOnWarning="true"
          testdox="true"
          colors="true"
-         verbose="true">
+         cacheDirectory=".phpunit.cache"
+         requireCoverageMetadata="false"
+         beStrictAboutCoverageMetadata="false"
+         displayDetailsOnTestsThatTriggerWarnings="true">
     <php>
         <var name="PDO_DSN" value="pgsql:host=postgres;port=5432;dbname=repositoring;user=bruce;password=mypass" />
         <var name="DOCTRINE_DBAL_URL" value="pgsql://bruce:mypass@postgres:5432/repositoring" />
