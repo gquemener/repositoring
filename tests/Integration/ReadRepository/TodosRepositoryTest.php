@@ -24,7 +24,7 @@ abstract class TodosRepositoryTest extends TestCase
         $writeModelRepository->save($this->closedTodo());
 
         $readModelRepository = $this->getReadModelRepository();
-        $this->assertCount(3, $readModelRepository->opened());
+        $this->assertCount(3, iterator_to_array($readModelRepository->opened()));
     }
 
     abstract protected function getWriteModelRepository(): TodoRepository;
