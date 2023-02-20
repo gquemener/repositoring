@@ -42,4 +42,9 @@ RUN wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/$php_cs_
 RUN chmod +x php-cs-fixer.phar
 RUN mv php-cs-fixer.phar /usr/bin/php-cs-fixer
 
+ARG php_security_checker_version
+RUN wget https://github.com/fabpot/local-php-security-checker/releases/download/v$php_security_checker_version/local-php-security-checker_"$php_security_checker_version"_linux_amd64
+RUN chmod +x local-php-security-checker_"$php_security_checker_version"_linux_amd64
+RUN mv local-php-security-checker_"$php_security_checker_version"_linux_amd64 /usr/bin/security_checker
+
 CMD ["php", "-v"]
