@@ -6,10 +6,10 @@ services:
             context: ./docker/php
             args:
                 wait_version: 2.9.0
-                phpunit_version: 10.0.4
-                phpstan_version: 1.9.14
+                phpunit_version: 10.2.3
+                phpstan_version: 1.10.21
                 deptrac_version: 1.0.2
-                php_cs_fixer_version: v3.14.3
+                php_cs_fixer_version: v3.20.0
                 php_security_checker_version: 2.0.6
         working_dir: /app
         volumes:
