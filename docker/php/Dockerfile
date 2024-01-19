@@ -11,32 +11,27 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/
 RUN apk del .build-deps
 
 # https://hub.docker.com/_/composer?tab=tags
-COPY --from=composer:2.5.8 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
 
-# https://github.com/sebastianbergmann/phpunit/tags
 ARG phpunit_version
 RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar
 RUN chmod +x phpunit-$phpunit_version.phar
 RUN mv phpunit-$phpunit_version.phar /usr/bin/phpunit
 
-# https://github.com/ufoscout/docker-compose-wait/tags
 ARG wait_version
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$wait_version/wait /usr/bin/wait
 RUN chmod +x /usr/bin/wait
 
-# https://github.com/phpstan/phpstan/tags
 ARG phpstan_version
 RUN wget https://github.com/phpstan/phpstan/releases/download/$phpstan_version/phpstan.phar
 RUN chmod +x phpstan.phar
 RUN mv phpstan.phar /usr/bin/phpstan
 
-# https://github.com/qossmic/deptrac/tags
 ARG deptrac_version
 RUN wget https://github.com/qossmic/deptrac/releases/download/$deptrac_version/deptrac.phar
 RUN chmod +x deptrac.phar
 RUN mv deptrac.phar /usr/bin/deptrac
 
-# https://github.com/FriendsOfPHP/PHP-CS-Fixer/tags
 ARG php_cs_fixer_version
 RUN wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/$php_cs_fixer_version/php-cs-fixer.phar
 RUN chmod +x php-cs-fixer.phar
