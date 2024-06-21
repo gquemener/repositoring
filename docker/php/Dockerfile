@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/php?tab=tags
-FROM php:8.2.7-cli-alpine
+FROM php:8.2.19-cli-alpine
 
 RUN apk add postgresql-dev
 RUN docker-php-ext-install pdo_pgsql
