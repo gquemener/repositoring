@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
     php:
         build:
@@ -13,8 +11,8 @@ services:
                 php_security_checker_version: 2.0.6 # https://github.com/fabpot/local-php-security-checker/tags
         working_dir: /app
         volumes:
-            - '.:/app'
-        user: '${UID:-1000}:${GID:-1000}'
+            - ".:/app"
+        user: "${UID:-1000}:${GID:-1000}"
         depends_on:
             - postgres
         environment:
@@ -24,7 +22,7 @@ services:
     postgres:
         image: postgres:13
         volumes:
-            - './docker/pgsql:/docker-entrypoint-initdb.d'
+            - "./docker/pgsql:/docker-entrypoint-initdb.d"
         environment:
             POSTGRES_DB: repositoring
             POSTGRES_USER: bruce
