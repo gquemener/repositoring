@@ -19,7 +19,7 @@ check: vendor
 	docker-compose run --rm --no-deps php phpstan --no-progress --ansi
 	docker-compose run --rm --no-deps php deptrac --ansi
 	docker-compose run --rm --no-deps -e PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer fix --dry-run --ansi --show-progress=none --diff
-	docker-compose run --rm --no-deps php security_checker
+	docker-compose run --rm --no-deps php composer audit
 
 .PHONY: update-deps
 update-deps:

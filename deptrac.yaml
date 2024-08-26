@@ -7,15 +7,15 @@ parameters:
         - name: Domain
           collectors:
               - type: directory
-                regex: src/Domain/.*
+                value: src/Domain/.*
         - name: Application
           collectors:
               - type: directory
-                regex: src/Application/.*
+                value: src/Application/.*
         - name: Infrastructure
           collectors:
               - type: directory
-                regex: src/Infrastructure/.*
+                value: src/Infrastructure/.*
     ruleset:
         Infrastructure:
             - Domain

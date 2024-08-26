@@ -4,11 +4,10 @@ services:
             context: ./docker/php
             args:
                 wait_version: 2.12.1 # https://github.com/ufoscout/docker-compose-wait/tags
-                phpunit_version: 10.5.8 # https://github.com/sebastianbergmann/phpunit/tags
-                phpstan_version: 1.10.56 # https://github.com/phpstan/phpstan/tags
-                deptrac_version: 1.0.2 # https://github.com/qossmic/deptrac/tags
-                php_cs_fixer_version: v3.47.1 # https://github.com/friendsofphp/php-cs-fixer/tags
-                php_security_checker_version: 2.0.6 # https://github.com/fabpot/local-php-security-checker/tags
+                phpunit_version: 11.3.1 # https://github.com/sebastianbergmann/phpunit/tags
+                phpstan_version: 1.11.11 # https://github.com/phpstan/phpstan/tags
+                deptrac_version: 2.0.1 # https://github.com/qossmic/deptrac/tags
+                php_cs_fixer_version: v3.62.0 # https://github.com/friendsofphp/php-cs-fixer/tags
         working_dir: /app
         volumes:
             - ".:/app"

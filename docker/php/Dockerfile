@@ -11,7 +11,7 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/
 RUN apk del .build-deps
 
 # https://hub.docker.com/_/composer?tab=tags
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7.8 /usr/bin/composer /usr/bin/composer
 
 ARG phpunit_version
 RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar
@@ -36,10 +36,5 @@ ARG php_cs_fixer_version
 RUN wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/$php_cs_fixer_version/php-cs-fixer.phar
 RUN chmod +x php-cs-fixer.phar
 RUN mv php-cs-fixer.phar /usr/bin/php-cs-fixer
-
-ARG php_security_checker_version
-RUN wget https://github.com/fabpot/local-php-security-checker/releases/download/v$php_security_checker_version/local-php-security-checker_"$php_security_checker_version"_linux_amd64
-RUN chmod +x local-php-security-checker_"$php_security_checker_version"_linux_amd64
-RUN mv local-php-security-checker_"$php_security_checker_version"_linux_amd64 /usr/bin/security_checker
 
 CMD ["php", "-v"]
