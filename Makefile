@@ -20,6 +20,7 @@ check: vendor
 	docker-compose run --rm --no-deps php deptrac --ansi
 	docker-compose run --rm --no-deps -e PHP_CS_FIXER_IGNORE_ENV=1 php php-cs-fixer fix --dry-run --ansi --show-progress=none --diff
 	docker-compose run --rm --no-deps php composer audit
+	docker-compose run --rm --no-deps php composer outdated --strict
 
 .PHONY: update-deps
 update-deps:

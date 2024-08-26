@@ -23,8 +23,8 @@
     "require": {
         "doctrine/orm": "^2.8",
         "prooph/pdo-event-store": "^1.13",
-        "symfony/cache": "^7.0",
-        "symfony/uid": "^7.0"
+        "symfony/cache": "^7.1",
+        "symfony/uid": "^7.1"
     },
     "config": {
         "allow-plugins": {
