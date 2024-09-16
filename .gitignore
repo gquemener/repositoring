@@ -3,3 +3,4 @@
 /.phpunit.cache
 /.deptrac.cache
 /.php-cs-fixer.cache
+composer.lock
