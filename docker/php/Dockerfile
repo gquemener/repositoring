@@ -11,7 +11,7 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/
 RUN apk del .build-deps
 
 # https://hub.docker.com/_/composer?tab=tags
-COPY --from=composer:2.7.8 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8.3 /usr/bin/composer /usr/bin/composer
 
 ARG phpunit_version
 RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar
