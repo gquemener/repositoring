@@ -9,13 +9,13 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS linux-headers
 
 RUN curl -L -o /tmp/todo-ext.tar.gz https://github.com/gquemener/todo-ext/archive/refs/tags/0.1.0.tar.gz
 RUN mkdir /tmp/todo-ext && \
-  tar -xzvf /tmp/todo-ext.tar.gz -C /tmp/todo-ext --strip-components=1 && \
-  cd /tmp/todo-ext &&\
-  phpize && \
-  ./configure && \
-  make && \
-  make install && \
-  echo "extension=todo" > /usr/local/etc/php/conf.d/todo.ini
+    tar -xzvf /tmp/todo-ext.tar.gz -C /tmp/todo-ext --strip-components=1 && \
+    cd /tmp/todo-ext &&\
+    phpize && \
+    ./configure && \
+    make && \
+    make install && \
+    echo "extension=todo" > /usr/local/etc/php/conf.d/todo.ini
 
 RUN pecl install xdebug
 COPY xdebug.ini /usr/local/etc/php/conf.d/
@@ -25,27 +25,27 @@ RUN apk del .build-deps
 COPY --from=composer:2.8.3 /usr/bin/composer /usr/bin/composer
 
 ARG phpunit_version
-RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar
-RUN chmod +x phpunit-$phpunit_version.phar
-RUN mv phpunit-$phpunit_version.phar /usr/bin/phpunit
+RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar && \
+    chmod +x phpunit-$phpunit_version.phar && \
+    mv phpunit-$phpunit_version.phar /usr/bin/phpunit
 
 ARG wait_version
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$wait_version/wait /usr/bin/wait
 RUN chmod +x /usr/bin/wait
 
 ARG phpstan_version
-RUN wget https://github.com/phpstan/phpstan/releases/download/$phpstan_version/phpstan.phar
-RUN chmod +x phpstan.phar
-RUN mv phpstan.phar /usr/bin/phpstan
+RUN wget https://github.com/phpstan/phpstan/releases/download/$phpstan_version/phpstan.phar && \
+    chmod +x phpstan.phar && \
+    mv phpstan.phar /usr/bin/phpstan
 
 ARG deptrac_version
-RUN wget https://github.com/qossmic/deptrac/releases/download/$deptrac_version/deptrac.phar
-RUN chmod +x deptrac.phar
-RUN mv deptrac.phar /usr/bin/deptrac
+RUN wget https://github.com/qossmic/deptrac/releases/download/$deptrac_version/deptrac.phar && \
+    chmod +x deptrac.phar && \
+    mv deptrac.phar /usr/bin/deptrac
 
 ARG php_cs_fixer_version
-RUN wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/$php_cs_fixer_version/php-cs-fixer.phar
-RUN chmod +x php-cs-fixer.phar
-RUN mv php-cs-fixer.phar /usr/bin/php-cs-fixer
+RUN wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/$php_cs_fixer_version/php-cs-fixer.phar && \
+    chmod +x php-cs-fixer.phar && \
+    mv php-cs-fixer.phar /usr/bin/php-cs-fixer
 
 CMD ["php", "-v"]
