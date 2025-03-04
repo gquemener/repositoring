@@ -39,7 +39,7 @@ RUN wget https://github.com/phpstan/phpstan/releases/download/$phpstan_version/p
     mv phpstan.phar /usr/bin/phpstan
 
 ARG deptrac_version
-RUN wget https://github.com/qossmic/deptrac/releases/download/$deptrac_version/deptrac.phar && \
+RUN wget https://github.com/deptrac/deptrac/releases/download/$deptrac_version/deptrac.phar && \
     chmod +x deptrac.phar && \
     mv deptrac.phar /usr/bin/deptrac
 
