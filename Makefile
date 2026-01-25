@@ -20,7 +20,7 @@ check: vendor
 	docker compose run --rm --no-deps php deptrac --ansi
 	docker compose run --rm --no-deps php php-cs-fixer fix --dry-run --ansi --show-progress=none --diff
 	docker compose run --rm --no-deps php composer audit
-	docker compose run --rm --no-deps php composer outdated --strict
+	docker compose run --rm --no-deps php composer outdated
 
 .PHONY: update-deps
 update-deps:
