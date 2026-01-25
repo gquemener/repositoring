@@ -13,6 +13,7 @@ use App\Domain\TodoWasOpened;
 use App\Domain\TodoWasClosed;
 use Prooph\Common\Messaging\DomainEvent;
 use Prooph\Common\Messaging\Message;
+use RuntimeException;
 
 final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRepository
 {
@@ -36,7 +37,14 @@ final class InMemoryEventStoreTodoRepository implements TodoRepository, TodosRep
 
         $newStream = array_merge($this->streams[$todo->id()->asString()], $todo->releaseEvents());
         $versions = array_map(
-            fn (Message $event): int => $event->metadata()['_aggregate_version'],
+            function (Message $event): int {
+                $version = $event->metadata()['_aggregate_version'];
+                if (!is_int($version)) {
+                    throw new RuntimeException('Could not retrieve aggregate version in event metadata.');
+                }
+
+                return $version;
+            },
             $newStream
         );
         if (count($versions) !== count(array_unique($versions))) {

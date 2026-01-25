@@ -16,7 +16,7 @@ test: phpunit.xml vendor
 
 .PHONY: check
 check: vendor
-	docker compose run --rm --no-deps php phpstan --no-progress --ansi
+	docker compose run --rm --no-deps php phpstan --no-progress --ansi --memory-limit=-1
 	docker compose run --rm --no-deps php deptrac --ansi
 	docker compose run --rm --no-deps php php-cs-fixer fix --dry-run --ansi --show-progress=none --diff
 	docker compose run --rm --no-deps php composer audit

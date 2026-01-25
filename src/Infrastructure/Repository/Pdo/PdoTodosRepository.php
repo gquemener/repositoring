@@ -24,6 +24,7 @@ final class PdoTodosRepository implements TodosRepository
             throw CouldNotExecuteQuery::fromErrorInfo($this->pdo->errorInfo());
         }
 
+        /** @var array{'id': string, 'description': string} $data */
         foreach ($stmt->fetchAll() as $data) {
             $todo = new OpenedTodo();
             $todo->id = $data['id'];

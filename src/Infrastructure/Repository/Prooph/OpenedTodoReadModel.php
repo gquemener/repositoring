@@ -97,6 +97,7 @@ final class OpenedTodoReadModel extends AbstractReadModel implements TodosReposi
             throw CouldNotExecuteQuery::fromErrorInfo($this->connection->errorInfo());
         }
 
+        /** @var array{'id': string, 'description': string} $data */
         foreach ($stmt->fetchAll() as $data) {
             $todo = new OpenedTodo();
             $todo->id = $data['id'];

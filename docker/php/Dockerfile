@@ -1,5 +1,5 @@
-# https://hub.docker.com/_/php?tab=tags
-FROM php:8.3.15-cli-alpine
+# https://hub.docker.com/_/php/tags?name=cli-alpine
+FROM php:8.5.2-cli-alpine
 
 RUN apk add postgresql-dev
 RUN docker-php-ext-install pdo_pgsql
@@ -21,8 +21,8 @@ RUN pecl install xdebug
 COPY xdebug.ini /usr/local/etc/php/conf.d/
 RUN apk del .build-deps
 
-# https://hub.docker.com/_/composer?tab=tags
-COPY --from=composer:2.8.3 /usr/bin/composer /usr/bin/composer
+# https://hub.docker.com/_/composer/tags
+COPY --from=composer:2.9.4 /usr/bin/composer /usr/bin/composer
 
 ARG phpunit_version
 RUN wget https://phar.phpunit.de/phpunit-$phpunit_version.phar && \
