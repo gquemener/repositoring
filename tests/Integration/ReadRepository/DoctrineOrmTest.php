@@ -25,6 +25,7 @@ final class DoctrineOrmTest extends TodosRepositoryTestCase
             isDevMode: true,
             isXsdValidationEnabled: false,
         );
+        $config->enableNativeLazyObjects(true);
 
         $connection  = DriverManager::getConnection(
             (new DsnParser())->parse($GLOBALS['DOCTRINE_DSN']),
