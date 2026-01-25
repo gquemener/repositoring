@@ -4,7 +4,7 @@ services:
             context: ./docker/php
             args:
                 wait_version: 2.12.1 # https://github.com/ufoscout/docker-compose-wait/tags
-                phpunit_version: 11.5.49 # https://github.com/sebastianbergmann/phpunit/tags
+                phpunit_version: 12.5.7 # https://github.com/sebastianbergmann/phpunit/tags
                 phpstan_version: 2.1.37 # https://github.com/phpstan/phpstan/tags
                 deptrac_version: 2.0.6 # https://github.com/deptrac/deptrac/tags
                 php_cs_fixer_version: v3.93.0 # https://github.com/friendsofphp/php-cs-fixer/tags
